@@ -1,13 +1,15 @@
 import './App.scss';
-import { Header, Navbar, Profile } from './components';
-
+import { Dialogs, Header, Navbar, Profile } from './components';
 
 function App() {
     return (
         <div className='app-wrapper'>
             <Header />
             <Navbar />
-            <Profile />
+            <div className='app-wrapper-content'>
+                <Dialogs />
+                {/* <Profile /> */}
+            </div>
         </div>
     );
 }

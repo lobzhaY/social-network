@@ -3,7 +3,7 @@ import styles from './Profile.module.scss';
 
 export const Profile = () => {
     return (
-        <div className={styles.content}>
+        <div>
             <div className={styles.imgWrapper}>
                 <img
                     src='https://s3.eu-central-1.amazonaws.com/aviata-blog-2.0/blog/posts/optimized/0_0e8a363f5e2211a7fa0290d454db7ee67c86c4d0.png.webp'
