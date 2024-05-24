@@ -15,12 +15,12 @@ export const router = createBrowserRouter([
             {
                 path: ROUTER_PATH.dialogs,
                 element: <Dialogs />,
-               /*  children: [
+                children: [
                     {
-                    path: '/:id',
+                    path: `${ROUTER_PATH.dialogs}/:id`,
                     element: <div>123</div>
                     }
-                ] */
+                ]
             },
             {
                 path: ROUTER_PATH.news,
