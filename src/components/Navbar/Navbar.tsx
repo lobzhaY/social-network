@@ -1,53 +1,66 @@
 import { NavLink } from 'react-router-dom';
 import styles from './Navbar.module.scss';
 import { ROUTER_PATH } from '../../routes/router-constants';
+import { FriendType } from './NavbarType';
+import { Friend } from './Friend';
 
-export const Navbar = () => {
+type NavbarType = {
+    state: {
+        friends: FriendType[];
+    };
+};
+
+export const Navbar: React.FC<NavbarType> = ({ state }) => {
     return (
         <nav className={styles.nav}>
             <div className={styles.item}>
-                <NavLink to={ROUTER_PATH.profile} 
-                className={({ isActive }) =>
-                    isActive
-                      ? styles.active
-                      : ""
-                  }
-                >Profile</NavLink>
+                <NavLink
+                    to={ROUTER_PATH.profile}
+                    className={({ isActive }) => (isActive ? styles.active : '')}
+                >
+                    Profile
+                </NavLink>
             </div>
             <div className={styles.item}>
-                <NavLink to={ROUTER_PATH.dialogs}
-                className={({ isActive }) =>
-                    isActive
-                      ? styles.active
-                      : ""
-                  }>Messages</NavLink>
+                <NavLink
+                    to={ROUTER_PATH.dialogs}
+                    className={({ isActive }) => (isActive ? styles.active : '')}
+                >
+                    Messages
+                </NavLink>
             </div>
             <div className={styles.item}>
-                <NavLink to={ROUTER_PATH.news}
-                className={({ isActive }) =>
-                    isActive
-                      ? styles.active
-                      : ""
-                  }
-                >News</NavLink>
+                <NavLink
+                    to={ROUTER_PATH.news}
+                    className={({ isActive }) => (isActive ? styles.active : '')}
+                >
+                    News
+                </NavLink>
             </div>
             <div className={styles.item}>
-                <NavLink to={ROUTER_PATH.music}
-                className={({ isActive }) =>
-                    isActive
-                      ? styles.active
-                      : ""
-                  }
-                >Music</NavLink>
+                <NavLink
+                    to={ROUTER_PATH.music}
+                    className={({ isActive }) => (isActive ? styles.active : '')}
+                >
+                    Music
+                </NavLink>
             </div>
             <div className={styles.item}>
-                <NavLink to={ROUTER_PATH.settings}
-                className={({ isActive }) =>
-                    isActive
-                      ? styles.active
-                      : ""
-                  }
-                >Settings</NavLink>
+                <NavLink
+                    to={ROUTER_PATH.settings}
+                    className={({ isActive }) => (isActive ? styles.active : '')}
+                >
+                    Settings
+                </NavLink>
+            </div>
+
+            <div>
+                <h3>Friends</h3>
+                <div className={styles.friendsContainer}>
+                    {state.friends.map((friend) => (
+                        <Friend key={friend.id} friend={friend} />
+                    ))}
+                </div>
             </div>
         </nav>
     );

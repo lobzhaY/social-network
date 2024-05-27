@@ -1,21 +1,33 @@
+import { RefObject, createRef } from 'react';
 import styles from './MyPosts.module.scss';
+import { PostType } from './MyPostsType';
 import { Post } from './Post';
-import { postsData } from './utils';
 
-export const MyPosts = () => {
+type MyPostsType = {
+    posts: PostType[];
+};
+
+export const MyPosts: React.FC<MyPostsType> = ({ posts }) => {
+    const newPostElement: RefObject<HTMLTextAreaElement> = createRef();
+
+    const handleAddPost = () => {
+        const text = newPostElement.current?.value;
+        alert(text);
+    };
+
     return (
         <div className={styles.postsBlock}>
             <h3>My Posts</h3>
             <div>
                 <div>
-                    <textarea></textarea>
+                    <textarea ref={newPostElement}></textarea>
                 </div>
                 <div>
-                    <button>Add post</button>
+                    <button onClick={handleAddPost}>Add post</button>
                 </div>
             </div>
             <div className={styles.posts}>
-                {postsData.map((post) => (
+                {posts.map((post) => (
                     <Post message={post.message} likeCount={post.likeCount} key={post.id} />
                 ))}
             </div>

@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { Dialogs, Music, News, Profile, Settings } from '../components';
 import App from '../App';
 import { ROUTER_PATH } from './router-constants';
+import { state } from '../redux/state';
 
 export const router = createBrowserRouter([
     {
@@ -10,17 +11,21 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: ROUTER_PATH.profile,
-                element: <Profile />,
+                element: <Profile state={state.profilePage} />,
             },
             {
                 path: ROUTER_PATH.dialogs,
-                element: <Dialogs />,
+                element: (
+                    <Dialogs
+                        state={state.messagesPage}
+                    />
+                ),
                 children: [
                     {
-                    path: `${ROUTER_PATH.dialogs}/:id`,
-                    element: <div>123</div>
-                    }
-                ]
+                        path: `${ROUTER_PATH.dialogs}/:id`,
+                        element: <div>123</div>,
+                    },
+                ],
             },
             {
                 path: ROUTER_PATH.news,
