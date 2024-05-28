@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { Dialogs, Music, News, Profile, Settings } from '../components';
 import App from '../App';
 import { ROUTER_PATH } from './router-constants';
-import { state } from '../redux/state';
+import { state, addPost, updateNewPostText } from '../redux/state';
 
 export const router = createBrowserRouter([
     {
@@ -11,7 +11,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: ROUTER_PATH.profile,
-                element: <Profile state={state.profilePage} />,
+                element: <Profile state={state.profilePage} addPost={addPost} updateNewPostText={updateNewPostText} />,
             },
             {
                 path: ROUTER_PATH.dialogs,

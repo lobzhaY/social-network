@@ -5,14 +5,21 @@ import { Post } from './Post';
 
 type MyPostsType = {
     posts: PostType[];
+    newPostText: string;
+    addPost: () => void;
+    updateNewPostText: (text: string) => void;
 };
 
-export const MyPosts: React.FC<MyPostsType> = ({ posts }) => {
+export const MyPosts: React.FC<MyPostsType> = ({ posts, addPost, newPostText, updateNewPostText }) => {
     const newPostElement: RefObject<HTMLTextAreaElement> = createRef();
 
     const handleAddPost = () => {
+        addPost();
+    };
+
+    const handlePostChange = () => {
         const text = newPostElement.current?.value;
-        alert(text);
+        updateNewPostText(text as string);
     };
 
     return (
@@ -20,7 +27,11 @@ export const MyPosts: React.FC<MyPostsType> = ({ posts }) => {
             <h3>My Posts</h3>
             <div>
                 <div>
-                    <textarea ref={newPostElement}></textarea>
+                    <textarea
+                        ref={newPostElement}
+                        onChange={handlePostChange}
+                        value={newPostText}
+                    />
                 </div>
                 <div>
                     <button onClick={handleAddPost}>Add post</button>

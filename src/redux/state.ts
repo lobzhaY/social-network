@@ -1,6 +1,7 @@
 import { DialogsType, MessagesType } from '../components/Dialogs/dataType';
 import { FriendType } from '../components/Navbar/NavbarType';
 import { PostType } from '../components/Profile/MyPosts/MyPostsType';
+import { rerenderEntireTree } from '../render';
 
 export const postsData: PostType[] = [
     { id: '3', message: 'И с медведем.', likeCount: 0 },
@@ -45,6 +46,7 @@ export const friendsData: FriendType[] = [
 export const state = {
     profilePage: {
         posts: postsData,
+        newPostText: ''
     },
     messagesPage: {
         dialogs: dialogsData,
@@ -54,3 +56,22 @@ export const state = {
         friends: friendsData,
     },
 };
+
+export const addPost = () => {
+    const newPost: PostType = {
+        id: '5',
+        message: state.profilePage.newPostText,
+        likeCount: 0,
+    };
+
+    state.profilePage.posts.push(newPost);
+    state.profilePage.newPostText = '';
+
+    rerenderEntireTree();
+}
+
+export const updateNewPostText = (newText: string) => {
+    state.profilePage.newPostText = newText;
+
+    rerenderEntireTree();
+}
