@@ -1,13 +1,13 @@
 import { Outlet } from 'react-router-dom';
 import './App.scss';
 import { Header, Navbar } from './components';
-import { state } from './redux/state';
+import { store } from './redux/state';
 
 function App() {
     return (
         <div className='app-wrapper'>
             <Header />
-            <Navbar state={state.sidebar} />
+            <Navbar state={store.getState().sidebar} />
             <div className='app-wrapper-content'>
                 <Outlet />
             </div>

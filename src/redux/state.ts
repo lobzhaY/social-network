@@ -1,7 +1,6 @@
 import { DialogsType, MessagesType } from '../components/Dialogs/dataType';
 import { FriendType } from '../components/Navbar/NavbarType';
 import { PostType } from '../components/Profile/MyPosts/MyPostsType';
-import { rerenderEntireTree } from '../render';
 
 export const postsData: PostType[] = [
     { id: '3', message: 'И с медведем.', likeCount: 0 },
@@ -41,37 +40,49 @@ export const friendsData: FriendType[] = [
         name: 'Юля',
         imgSrc: 'https://static.insales-cdn.com/files/1/1158/25838726/original/8_ae6b6513214f1992ed752af830e37479.jpg'
     },
-]
+];
 
-export const state = {
-    profilePage: {
-        posts: postsData,
-        newPostText: ''
+export const store = {
+    _state: {
+        profilePage: {
+            posts: postsData,
+            newPostText: ''
+        },
+        messagesPage: {
+            dialogs: dialogsData,
+            messages: messagesData,
+        },
+        sidebar: {
+            friends: friendsData,
+        },
     },
-    messagesPage: {
-        dialogs: dialogsData,
-        messages: messagesData,
+    getState() {
+        return this._state;
     },
-    sidebar: {
-        friends: friendsData,
+    _callSubscriber()  {
+        console.log('Функция заглушка');
+    },
+    addPost() {
+        console.log(this.getState());
+        
+        const newPost: PostType = {
+            id: '5',
+            message: this.getState().profilePage.newPostText,
+            likeCount: 0,
+        };
+    
+        this.getState().profilePage.posts.push(newPost);
+        this.getState().profilePage.newPostText = '';
+    
+        this._callSubscriber();
+    },
+    updateNewPostText(newText: string) {
+        this.getState().profilePage.newPostText = newText;
+    
+        this._callSubscriber();
+    },
+    subscribe(observer: () => void) {
+        this._callSubscriber = observer;
     },
 };
 
-export const addPost = () => {
-    const newPost: PostType = {
-        id: '5',
-        message: state.profilePage.newPostText,
-        likeCount: 0,
-    };
-
-    state.profilePage.posts.push(newPost);
-    state.profilePage.newPostText = '';
-
-    rerenderEntireTree();
-}
-
-export const updateNewPostText = (newText: string) => {
-    state.profilePage.newPostText = newText;
-
-    rerenderEntireTree();
-}
