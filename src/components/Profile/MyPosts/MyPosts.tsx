@@ -2,24 +2,24 @@ import { RefObject, createRef } from 'react';
 import styles from './MyPosts.module.scss';
 import { PostType } from './MyPostsType';
 import { Post } from './Post';
+import { ActionType, addPostActionCreator, updateNewPostTextActionCreator } from '../../../redux/state';
 
 type MyPostsType = {
     posts: PostType[];
     newPostText: string;
-    addPost: () => void;
-    updateNewPostText: (text: string) => void;
+    dispatch: (action: ActionType) => void;
 };
 
-export const MyPosts: React.FC<MyPostsType> = ({ posts, addPost, newPostText, updateNewPostText }) => {
+export const MyPosts: React.FC<MyPostsType> = ({ posts, newPostText, dispatch }) => {
     const newPostElement: RefObject<HTMLTextAreaElement> = createRef();
 
     const handleAddPost = () => {
-        addPost();
+        dispatch(addPostActionCreator());
     };
 
     const handlePostChange = () => {
         const text = newPostElement.current?.value;
-        updateNewPostText(text as string);
+        dispatch(updateNewPostTextActionCreator(text as string));
     };
 
     return (

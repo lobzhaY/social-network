@@ -3,21 +3,21 @@ import { ProfileInfo } from './ProfileInfo';
 
 import styles from './Profile.module.scss';
 import { PostType } from './MyPosts/MyPostsType';
+import { ActionType } from '../../redux/state';
 
 type ProfileType = {
     state: {
         posts: PostType[];
         newPostText: string;
     },
-    addPost: () => void;
-    updateNewPostText: (text: string) => void;
+    dispatch: (action: ActionType) => void
 };
 
-export const Profile: React.FC<ProfileType> = ({ state, addPost, updateNewPostText }) => {
+export const Profile: React.FC<ProfileType> = ({ state, dispatch }) => {
     return (
         <div>
             <ProfileInfo />
-            <MyPosts posts={state.posts} addPost={addPost} newPostText={state.newPostText} updateNewPostText={updateNewPostText} />
+            <MyPosts posts={state.posts} newPostText={state.newPostText} dispatch={dispatch} />
         </div>
     );
 };

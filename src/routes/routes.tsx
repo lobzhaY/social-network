@@ -11,7 +11,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: ROUTER_PATH.profile,
-                element: <Profile state={store.getState().profilePage} addPost={store.addPost.bind(store)} updateNewPostText={store.updateNewPostText.bind(store)} />,
+                element: <Profile state={store.getState().profilePage} dispatch={store.dispatch.bind(store)} />,
             },
             {
                 path: ROUTER_PATH.dialogs,
