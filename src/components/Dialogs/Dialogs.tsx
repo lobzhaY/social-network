@@ -4,20 +4,30 @@ import { DialogItem } from './DialogItem';
 import { MessageItem } from './MessageItem';
 import { DialogsType, MessagesType } from './dataType';
 import { RefObject, createRef } from 'react';
+import {
+    ActionType,
+    addMessageActionCreator,
+    updateNewMessageTextActionCreator,
+} from '../../redux/state';
 
 type DialogsComponentType = {
     state: {
         dialogs: DialogsType[];
         messages: MessagesType[];
+        newMessageText: string;
     };
+    dispatch: (action: ActionType) => void;
 };
-export const Dialogs: React.FC<DialogsComponentType> = ({ state }) => {
-    const newPostElement: RefObject<HTMLTextAreaElement> = createRef();
-
-    const handleAddPost = () => {
-        const text = newPostElement.current?.value;
-        alert(text);
+export const Dialogs: React.FC<DialogsComponentType> = ({ state, dispatch }) => {
+    const handleAddMessage = () => {
+        dispatch(addMessageActionCreator());
     };
+
+    const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const text = e.target.value;
+        dispatch(updateNewMessageTextActionCreator(text as string));
+    };
+
     return (
         <div className={styles.dialogs}>
             <div className={styles.dialogsItems}>
@@ -30,20 +40,19 @@ export const Dialogs: React.FC<DialogsComponentType> = ({ state }) => {
                     <MessageItem message={message.message} key={message.id} />
                 ))}
 
-               {/*  <Outlet /> */}
-               <div>
-      
+                {/*  <Outlet /> */}
                 <div>
-                    <textarea ref={newPostElement}></textarea>
+                    <div>
+                        <textarea
+                            onChange={handleMessageChange}
+                            value={state.newMessageText}
+                        ></textarea>
+                    </div>
+                    <div>
+                        <button onClick={handleAddMessage}>Add message</button>
+                    </div>
                 </div>
-                <div>
-                    <button onClick={handleAddPost}>Add post</button>
-                </div>
-         
-               </div>
             </div>
-
-           
         </div>
     );
 };

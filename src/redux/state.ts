@@ -51,6 +51,7 @@ export const store = {
         messagesPage: {
             dialogs: dialogsData,
             messages: messagesData,
+            newMessageText: '',
         },
         sidebar: {
             friends: friendsData,
@@ -78,8 +79,24 @@ export const store = {
 
         this._callSubscriber();
     },
+    _addMessage() {
+        const newMessage: {id: string, message: string} = {
+            id: '6',
+            message: this.getState().messagesPage.newMessageText,
+        }
+
+        this._state.messagesPage.messages.unshift(newMessage);
+        this.getState().messagesPage.newMessageText = '';
+
+        this._callSubscriber();
+    },
     _updateNewPostText(newText: string) {
         this.getState().profilePage.newPostText = newText;
+
+        this._callSubscriber();
+    },
+    _updateNewMessageText(newText: string) {
+        this._state.messagesPage.newMessageText = newText;
 
         this._callSubscriber();
     },
@@ -89,6 +106,10 @@ export const store = {
             this._addPost();
         } else if (action.type === actionsTypes.updateNewPostText) {
             this._updateNewPostText(action.payload as string);
+        } else if (action.type === actionsTypes.updateNewMessageText) {
+            this._updateNewMessageText(action.payload as string);
+        } else if (action.type === actionsTypes.addMessage) {
+            this._addMessage();
         }
     },
 };
@@ -98,13 +119,24 @@ export type ActionType = { type: string; payload?: string };
 export const actionsTypes = {
     addPost: 'ADD_POST',
     updateNewPostText: 'UPDATE_NEW_POST_TEXT',
+    addMessage: 'ADD_MESSAGE',
+    updateNewMessageText: 'UPDATE_NEW_MESSAGE_TEXT'
 };
 
 export const addPostActionCreator = () => ({
     type: actionsTypes.addPost,
 });
 
+export const addMessageActionCreator = () => ({
+    type: actionsTypes.addMessage,
+});
+
 export const updateNewPostTextActionCreator = (text: string) => ({
     type: actionsTypes.updateNewPostText,
+    payload: text,
+});
+
+export const updateNewMessageTextActionCreator = (text: string) => ({
+    type: actionsTypes.updateNewMessageText,
     payload: text,
 });
