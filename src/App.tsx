@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import './App.scss';
 import { Header, Navbar } from './components';
-import { store } from './redux/state';
+import { store } from './redux/store';
 
 function App() {
     return (

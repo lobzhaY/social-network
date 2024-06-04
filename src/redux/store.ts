@@ -1,6 +1,9 @@
 import { DialogsType, MessagesType } from '../components/Dialogs/dataType';
 import { FriendType } from '../components/Navbar/NavbarType';
 import { PostType } from '../components/Profile/MyPosts/MyPostsType';
+import { messageReducer } from './message-reducer';
+import { profileReducer } from './profile-reducer';
+import { sidebarReducer } from './sidebar-reducer';
 
 export const postsData: PostType[] = [
     { id: '3', message: 'И с медведем.', likeCount: 0 },
@@ -67,50 +70,13 @@ export const store = {
         this._callSubscriber = observer;
     },
 
-    _addPost() {
-        const newPost: PostType = {
-            id: '5',
-            message: this.getState().profilePage.newPostText,
-            likeCount: 0,
-        };
-
-        this.getState().profilePage.posts.push(newPost);
-        this.getState().profilePage.newPostText = '';
-
-        this._callSubscriber();
-    },
-    _addMessage() {
-        const newMessage: {id: string, message: string} = {
-            id: '6',
-            message: this.getState().messagesPage.newMessageText,
-        }
-
-        this._state.messagesPage.messages.unshift(newMessage);
-        this.getState().messagesPage.newMessageText = '';
-
-        this._callSubscriber();
-    },
-    _updateNewPostText(newText: string) {
-        this.getState().profilePage.newPostText = newText;
-
-        this._callSubscriber();
-    },
-    _updateNewMessageText(newText: string) {
-        this._state.messagesPage.newMessageText = newText;
-
-        this._callSubscriber();
-    },
-
     dispatch(action: ActionType) {
-        if (action.type === actionsTypes.addPost) {
-            this._addPost();
-        } else if (action.type === actionsTypes.updateNewPostText) {
-            this._updateNewPostText(action.payload as string);
-        } else if (action.type === actionsTypes.updateNewMessageText) {
-            this._updateNewMessageText(action.payload as string);
-        } else if (action.type === actionsTypes.addMessage) {
-            this._addMessage();
-        }
+
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        this._state.messagesPage = messageReducer(this._state.messagesPage, action);
+        this._state.sidebar = sidebarReducer(this._state.sidebar, action);
+
+        this._callSubscriber();
     },
 };
 
@@ -122,21 +88,3 @@ export const actionsTypes = {
     addMessage: 'ADD_MESSAGE',
     updateNewMessageText: 'UPDATE_NEW_MESSAGE_TEXT'
 };
-
-export const addPostActionCreator = () => ({
-    type: actionsTypes.addPost,
-});
-
-export const addMessageActionCreator = () => ({
-    type: actionsTypes.addMessage,
-});
-
-export const updateNewPostTextActionCreator = (text: string) => ({
-    type: actionsTypes.updateNewPostText,
-    payload: text,
-});
-
-export const updateNewMessageTextActionCreator = (text: string) => ({
-    type: actionsTypes.updateNewMessageText,
-    payload: text,
-});

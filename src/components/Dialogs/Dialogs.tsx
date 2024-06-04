@@ -4,11 +4,11 @@ import { DialogItem } from './DialogItem';
 import { MessageItem } from './MessageItem';
 import { DialogsType, MessagesType } from './dataType';
 import { RefObject, createRef } from 'react';
+import { ActionType } from '../../redux/store';
 import {
-    ActionType,
     addMessageActionCreator,
     updateNewMessageTextActionCreator,
-} from '../../redux/state';
+} from '../../redux/message-reducer';
 
 type DialogsComponentType = {
     state: {

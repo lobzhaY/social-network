@@ -2,7 +2,11 @@ import { RefObject, createRef } from 'react';
 import styles from './MyPosts.module.scss';
 import { PostType } from './MyPostsType';
 import { Post } from './Post';
-import { ActionType, addPostActionCreator, updateNewPostTextActionCreator } from '../../../redux/state';
+import { ActionType } from '../../../redux/store';
+import {
+    addPostActionCreator,
+    updateNewPostTextActionCreator,
+} from '../../../redux/profile-reducer';
 
 type MyPostsType = {
     posts: PostType[];

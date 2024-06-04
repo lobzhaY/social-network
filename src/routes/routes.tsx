@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { Dialogs, Music, News, Profile, Settings } from '../components';
 import App from '../App';
 import { ROUTER_PATH } from './router-constants';
-import { store } from '../redux/state';
+import { store } from '../redux/redux-store';
 
 export const router = createBrowserRouter([
     {
