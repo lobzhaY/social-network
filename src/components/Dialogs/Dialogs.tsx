@@ -11,32 +11,37 @@ import {
 } from '../../redux/message-reducer';
 
 type DialogsComponentType = {
-    state: {
-        dialogs: DialogsType[];
-        messages: MessagesType[];
-        newMessageText: string;
-    };
-    dispatch: (action: ActionType) => void;
+    dialogs: DialogsType[];
+    messages: MessagesType[];
+    newMessageText: string;
+    addMessage: () => void;
+    updateMessage: (text: string) => void;
 };
-export const Dialogs: React.FC<DialogsComponentType> = ({ state, dispatch }) => {
+export const Dialogs: React.FC<DialogsComponentType> = ({
+    dialogs,
+    messages,
+    newMessageText,
+    addMessage,
+    updateMessage,
+}) => {
     const handleAddMessage = () => {
-        dispatch(addMessageActionCreator());
+        addMessage();
     };
 
     const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.target.value;
-        dispatch(updateNewMessageTextActionCreator(text as string));
+        updateMessage(text);
     };
 
     return (
         <div className={styles.dialogs}>
             <div className={styles.dialogsItems}>
-                {state.dialogs.map((dialog) => (
+                {dialogs.map((dialog) => (
                     <DialogItem name={dialog.name} id={dialog.id} key={dialog.id} />
                 ))}
             </div>
             <div className={styles.messages}>
-                {state.messages.map((message) => (
+                {messages.map((message) => (
                     <MessageItem message={message.message} key={message.id} />
                 ))}
 
@@ -45,7 +50,7 @@ export const Dialogs: React.FC<DialogsComponentType> = ({ state, dispatch }) => 
                     <div>
                         <textarea
                             onChange={handleMessageChange}
-                            value={state.newMessageText}
+                            value={newMessageText}
                         ></textarea>
                     </div>
                     <div>

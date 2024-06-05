@@ -3,6 +3,7 @@ import { Dialogs, Music, News, Profile, Settings } from '../components';
 import App from '../App';
 import { ROUTER_PATH } from './router-constants';
 import { store } from '../redux/redux-store';
+import { DialogsContainer } from '../components/Dialogs/DialogsContainer';
 
 export const router = createBrowserRouter([
     {
@@ -21,10 +22,7 @@ export const router = createBrowserRouter([
             {
                 path: ROUTER_PATH.dialogs,
                 element: (
-                    <Dialogs
-                        state={store.getState().messagesPage}
-                        dispatch={store.dispatch.bind(store)}
-                    />
+                    <DialogsContainer />
                 ),
                 children: [
                     {

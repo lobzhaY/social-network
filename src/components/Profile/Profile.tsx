@@ -4,6 +4,7 @@ import { ProfileInfo } from './ProfileInfo';
 import styles from './Profile.module.scss';
 import { PostType } from './MyPosts/MyPostsType';
 import { ActionType } from '../../redux/store';
+import { MyPostsContainer } from './MyPosts/MyPostsContainer';
 
 type ProfileType = {
     state: {
@@ -17,7 +18,7 @@ export const Profile: React.FC<ProfileType> = ({ state, dispatch }) => {
     return (
         <div>
             <ProfileInfo />
-            <MyPosts posts={state.posts} newPostText={state.newPostText} dispatch={dispatch} />
+            <MyPostsContainer />
         </div>
     );
 };
