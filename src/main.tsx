@@ -7,6 +7,7 @@ import './index.css';
 
 import { Provider } from 'react-redux';
 import { store } from './redux/redux-store.ts';
+import { ThemeContext, theme } from './themeContext.ts';
 
 /* const rerenderEntireTree = () => {
     ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -22,7 +23,9 @@ store.subscribe(rerenderEntireTree); */
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Provider store={store}>
-            <RouterProvider router={router} />
+            <ThemeContext.Provider value={theme.light}>
+                <RouterProvider router={router} />
+            </ThemeContext.Provider>
         </Provider>
     </React.StrictMode>,
 );
