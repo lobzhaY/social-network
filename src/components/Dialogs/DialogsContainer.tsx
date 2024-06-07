@@ -2,7 +2,7 @@ import {
     addMessageActionCreator,
     updateNewMessageTextActionCreator,
 } from '../../redux/message-reducer';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Dialogs } from './Dialogs';
 
 export const DialogsContainer: React.FC = () => {
@@ -27,3 +27,20 @@ export const DialogsContainer: React.FC = () => {
         />
     );
 };
+
+const mapStateToProps = (state) => {
+    return {
+        dialogs: state.messagePage.dialogs,
+        messages: state.messagePage.messages,
+        newMessageText: state.messagePage.newMessageText,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addMessage: () => { dispatch(addMessageActionCreator());},
+        updateMessage: (text: string) => { dispatch(updateNewMessageTextActionCreator(text as string));},
+    };
+};
+
+export const SuperDialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
