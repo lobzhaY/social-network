@@ -19,8 +19,7 @@ export const postsData: PostType[] = [
 const initialState = {
     posts: postsData,
     newPostText: '',
-}
-
+};
 
 export const profileReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -31,17 +30,19 @@ export const profileReducer = (state = initialState, action) => {
                 likeCount: 0,
             };
 
-            state.posts.push(newPost);
-            state.newPostText = '';
-            break;
+            return {
+                ...state,
+                newPostText: '',
+                posts: [...state.posts, newPost],
+            };
 
         case actionsTypes.updateNewPostText:
-            state.newPostText = action.payload as string;
-            break;
+            return {
+                ...state,
+                newPostText: action.payload as string,
+            };
 
         default:
-            break;
+            return state;
     }
-
-    return state;
 };

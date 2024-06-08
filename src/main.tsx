@@ -9,17 +9,6 @@ import { Provider } from 'react-redux';
 import { store } from './redux/redux-store.ts';
 import { ThemeContext, theme } from './themeContext.ts';
 
-/* const rerenderEntireTree = () => {
-    ReactDOM.createRoot(document.getElementById('root')!).render(
-        <React.StrictMode>
-            <RouterProvider router={router} />
-        </React.StrictMode>,
-    );
-};
-
-rerenderEntireTree();
-store.subscribe(rerenderEntireTree); */
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Provider store={store}>

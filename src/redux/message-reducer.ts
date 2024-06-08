@@ -40,17 +40,19 @@ export const messageReducer = (state = initialState, action) => {
                 message: state.newMessageText,
             };
 
-            state.messages.unshift(newMessage);
-            state.newMessageText = '';
-            break;
+            return {
+                ...state,
+                newMessageText: '',
+                messages: [...state.messages, newMessage],
+            };
 
         case actionsTypes.updateNewMessageText:
-            state.newMessageText = action.payload as string;
-            break;
+            return {
+                ...state,
+                newMessageText: action.payload as string,
+            };
 
         default:
-            break;
+            return state;
     }
-
-    return state;
 };
