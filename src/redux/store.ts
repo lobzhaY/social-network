@@ -86,5 +86,8 @@ export const actionsTypes = {
     addPost: 'ADD_POST',
     updateNewPostText: 'UPDATE_NEW_POST_TEXT',
     addMessage: 'ADD_MESSAGE',
-    updateNewMessageText: 'UPDATE_NEW_MESSAGE_TEXT'
+    updateNewMessageText: 'UPDATE_NEW_MESSAGE_TEXT',
+    setUsers: 'SET_USERS',
+    followUser: 'FOLLOW_USER',
+    unfollowUser: 'UNFOLLOW_USER'
 };

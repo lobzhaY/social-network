@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Dialogs, Music, News, Profile, Settings } from '../components';
+import { Music, News, Profile, Settings, UsersContainer } from '../components';
 import App from '../App';
 import { ROUTER_PATH } from './router-constants';
 import { store } from '../redux/redux-store';
-import { DialogsContainer, SuperDialogsContainer } from '../components/Dialogs/DialogsContainer';
+import { SuperDialogsContainer } from '../components/Dialogs/DialogsContainer';
 
 export const router = createBrowserRouter([
     {
@@ -43,6 +43,10 @@ export const router = createBrowserRouter([
                 path: ROUTER_PATH.settings,
                 element: <Settings />,
             },
+            {
+                path: ROUTER_PATH.users,
+                element: <UsersContainer />
+            }
         ],
     },
 ]);

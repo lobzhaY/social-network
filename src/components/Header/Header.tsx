@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import styles from './Header.module.scss';
 import { ThemeContext } from '../../themeContext';
 
-export const Header = () => {
+export const Header: React.FC = () => {
     const theme = useContext(ThemeContext);
 
     return (

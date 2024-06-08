@@ -21,6 +21,7 @@ export const friendsData: FriendType[] = [
 const initialState = {
     friends: friendsData,
 }
+
 export const sidebarReducer = (state = initialState, action) => {
    
 

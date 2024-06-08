@@ -31,6 +31,14 @@ export const Navbar: React.FC<NavbarType> = ({ state }) => {
             </div>
             <div className={styles.item}>
                 <NavLink
+                    to={ROUTER_PATH.users}
+                    className={({ isActive }) => (isActive ? styles.active : '')}
+                >
+                    Users
+                </NavLink>
+            </div>
+            <div className={styles.item}>
+                <NavLink
                     to={ROUTER_PATH.news}
                     className={({ isActive }) => (isActive ? styles.active : '')}
                 >
