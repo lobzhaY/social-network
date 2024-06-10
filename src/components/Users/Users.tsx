@@ -2,6 +2,10 @@ import { UserType } from './UsersType';
 import styles from './Users.module.scss';
 import { usersData } from '../../redux/users-reducer';
 import { useEffect } from 'react';
+import axios from 'axios';
+import { API_URL, headers } from '../../constants';
+
+import userMock from '../../assets/images/user-mock.png';
 
 type UsersType = {
     users: UserType[];
@@ -12,10 +16,12 @@ type UsersType = {
 
 export const Users: React.FC<UsersType> = ({ users, followUser, unfollowUser, setUsers }) => {
     useEffect(() => {
-        if (!users.length) {
-            setUsers(usersData);
-        }
-    }, []);
+            axios
+                .get(`${API_URL}users`, { headers })
+                .then((data) => console.log(data))
+                .catch((e) => console.log(e));
+            // setUsers(usersData);
+    }, [users]);
 
     return (
         <div>
@@ -23,11 +29,11 @@ export const Users: React.FC<UsersType> = ({ users, followUser, unfollowUser, se
                 <div key={user.id}>
                     <span>
                         <div className={styles.userAvatar}>
-                            {user.avatar ? (
-                                <img src={user.avatar} alt='User avatar' />
+                            {user.photos.small ? (
+                                <img src={user.photos.small} alt='User avatar' />
                             ) : (
                                 <img
-                                    src='https://img.freepik.com/free-photo/user-profile-icon-front-side-with-white-background_187299-40010.jpg?size=338&ext=jpg&ga=GA1.1.1546980028.1711929600&semt=ais'
+                                    src={userMock}
                                     alt='No photo available'
                                 />
                             )}
@@ -42,13 +48,13 @@ export const Users: React.FC<UsersType> = ({ users, followUser, unfollowUser, se
                     </span>
                     <span>
                         <span>
-                            <div>{user.fullName}</div>
+                            <div>{user.name}</div>
                             <div>{user.status}</div>
                         </span>
-                        <span>
+                      {/*   <span>
                             <div>{user.location.city}</div>
                             <div>{user.location.country}</div>
-                        </span>
+                        </span> */}
                     </span>
                 </div>
             ))}

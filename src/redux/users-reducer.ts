@@ -87,7 +87,7 @@ export const usersReducer = (state = initialState, action) => {
         case actionsTypes.followUser:
             return { 
               ...state, 
-              users: state.users.map((user) => {
+              users: state.users.map((user: UserType) => {
                 if (user.id === action.payload) {
                   return {
                     ...user,
@@ -102,7 +102,7 @@ export const usersReducer = (state = initialState, action) => {
         case actionsTypes.unfollowUser:
           return { 
             ...state, 
-            users: state.users.map((user) => {
+            users: state.users.map((user: UserType) => {
               if (user.id === action.payload) {
                 return {
                   ...user,

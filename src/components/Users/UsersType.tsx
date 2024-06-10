@@ -1,11 +1,11 @@
 export type UserType = {
-  id: string,
-  fullName: string,
-  status:string,
-  location: {
-      city: string,
-      country: string,
-  },
-  followed: boolean,
-  avatar: string,
+    "name": string,
+    "id": string,
+    "uniqueUrlName": string | null,
+    "photos": {
+      "small": string | null,
+      "large": string | null
+    },
+    "status": string | null,
+    "followed": boolean
 }
