@@ -6,6 +6,7 @@ import {
     unfollowActionCreator,
 } from '../../redux/users-reducer';
 import { UserType } from './UsersType';
+import { UsersClass } from './UsersClass';
 
 export const UsersContainer: React.FC = () => {
     const { users } = useSelector((state) => state.usersPage);
@@ -24,7 +25,7 @@ export const UsersContainer: React.FC = () => {
     };
 
     return (
-        <Users
+        <UsersClass
             users={users}
             setUsers={setUsers}
             followUser={followUser}

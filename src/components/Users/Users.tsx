@@ -7,7 +7,7 @@ import { API_URL, headers } from '../../constants';
 
 import userMock from '../../assets/images/user-mock.png';
 
-type UsersType = {
+export type UsersType = {
     users: UserType[];
     setUsers: (users: UserType[]) => void;
     followUser: (userId: string) => void;
