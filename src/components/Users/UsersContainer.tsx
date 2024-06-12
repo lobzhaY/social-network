@@ -1,15 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Users } from './Users';
 import {
     followActionCreator,
+    setCurrentPageActionCreator,
+    setTotalUsersCountActionCreator,
     setUsersActionCreator,
     unfollowActionCreator,
 } from '../../redux/users-reducer';
 import { UserType } from './UsersType';
-import { UsersClass } from './UsersClass';
+import { UsersAPIContainer } from './UsersClass';
 
 export const UsersContainer: React.FC = () => {
-    const { users } = useSelector((state) => state.usersPage);
+    const { users, pageSize, totalUsersCount, currentPage } = useSelector((state) => state.usersPage);
     const dispatch = useDispatch();
 
     const followUser = (userId: string) => {
@@ -24,12 +25,25 @@ export const UsersContainer: React.FC = () => {
         dispatch(setUsersActionCreator(users));
     };
 
+    const setCurrentPage = (currentPage: number) => {
+        dispatch(setCurrentPageActionCreator(currentPage));
+    };
+
+    const setTotalUsersCount = (totalUsers: number) => {
+        dispatch(setTotalUsersCountActionCreator(totalUsers));
+    };
+
     return (
-        <UsersClass
+        <UsersAPIContainer
             users={users}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            totalUsersCount={totalUsersCount}
             setUsers={setUsers}
             followUser={followUser}
             unfollowUser={unfollowUser}
+            setCurrentPage={setCurrentPage}
+            setTotalUsersCount={setTotalUsersCount}
         />
     );
 };

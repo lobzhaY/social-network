@@ -89,5 +89,7 @@ export const actionsTypes = {
     updateNewMessageText: 'UPDATE_NEW_MESSAGE_TEXT',
     setUsers: 'SET_USERS',
     followUser: 'FOLLOW_USER',
-    unfollowUser: 'UNFOLLOW_USER'
+    unfollowUser: 'UNFOLLOW_USER',
+    setCurrentPage: 'SET_CURRENT_PAGE',
+    setTotalUsersCount: 'SET_TOTAL_USERS_COUNT'
 };

@@ -70,48 +70,71 @@ export const unfollowActionCreator = (userId: string) => ({
 });
 
 export const setUsersActionCreator = (users: UserType[]) => ({
-  type: actionsTypes.setUsers,
-  payload: users,
+    type: actionsTypes.setUsers,
+    payload: users,
+});
+
+export const setCurrentPageActionCreator = (currentPage: number) => ({
+    type: actionsTypes.setCurrentPage,
+    payload: currentPage,
+});
+
+export const setTotalUsersCountActionCreator = (totalUsers: number) => ({
+  type: actionsTypes.setTotalUsersCount,
+  payload: totalUsers
 })
 
 const initialState = {
     users: [],
+    totalUsersCount: 0,
+    pageSize: 20,
+    currentPage: 1,
 };
 
 export const usersReducer = (state = initialState, action) => {
     switch (action.type) {
-      case actionsTypes.setUsers: 
-      return {
-        ...state, users: [...state.users, ...action.payload]
-      };
+        case actionsTypes.setUsers:
+            return {
+                ...state,
+                users: [...action.payload],
+            };
+        case actionsTypes.setCurrentPage:
+            return {
+                ...state,
+                currentPage: action.payload,
+            };
+          case actionsTypes.setTotalUsersCount:
+            return {
+              ...state,
+              totalUsersCount: action.payload
+            }
         case actionsTypes.followUser:
-            return { 
-              ...state, 
-              users: state.users.map((user: UserType) => {
-                if (user.id === action.payload) {
-                  return {
-                    ...user,
-                    followed: true
-                  }
-                }
-                return user
-              }) 
+            return {
+                ...state,
+                users: state.users.map((user: UserType) => {
+                    if (user.id === action.payload) {
+                        return {
+                            ...user,
+                            followed: true,
+                        };
+                    }
+                    return user;
+                }),
             };
 
-
         case actionsTypes.unfollowUser:
-          return { 
-            ...state, 
-            users: state.users.map((user: UserType) => {
-              if (user.id === action.payload) {
-                return {
-                  ...user,
-                  followed: false,
-                }
-              }
-              return user
-            }) 
-          };
+            return {
+                ...state,
+                users: state.users.map((user: UserType) => {
+                    if (user.id === action.payload) {
+                        return {
+                            ...user,
+                            followed: false,
+                        };
+                    }
+                    return user;
+                }),
+            };
 
         default:
             return state;

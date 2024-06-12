@@ -1,30 +1,56 @@
 import { UserType } from './UsersType';
 import styles from './Users.module.scss';
-import { usersData } from '../../redux/users-reducer';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { API_URL, headers } from '../../constants';
-
 import userMock from '../../assets/images/user-mock.png';
+import { useEffect, useState } from 'react';
 
 export type UsersType = {
     users: UserType[];
-    setUsers: (users: UserType[]) => void;
+    pageSize: number;
+    currentPage: number;
+    totalUsersCount: number;
     followUser: (userId: string) => void;
     unfollowUser: (userId: string) => void;
+    handleChangeCurrentPage: (currentPage: number) => void;
 };
 
-export const Users: React.FC<UsersType> = ({ users, followUser, unfollowUser, setUsers }) => {
+export const Users: React.FC<UsersType> = ({
+    users,
+    followUser,
+    unfollowUser,
+    totalUsersCount,
+    pageSize,
+    currentPage,
+    handleChangeCurrentPage
+}) => {
+    const [pagesCount, setPagesCount] = useState<number[]>([]);
+
     useEffect(() => {
-            axios
-                .get(`${API_URL}users`, { headers })
-                .then((data) => console.log(data))
-                .catch((e) => console.log(e));
-            // setUsers(usersData);
-    }, [users]);
+        pagesOfCount();
+    }, []);
+
+    const pagesOfCount = () => {
+        const pagesCount = Math.ceil(totalUsersCount / pageSize);
+        const pages = [];
+        for (let i = 1; i <= pagesCount; i++) {
+            pages.push(i);
+        }
+
+        setPagesCount([...pages]);
+    };
 
     return (
         <div>
+            <div>
+                {pagesCount!.map((pageItem) => (
+                    <span
+                        key={pageItem}
+                        className={currentPage === pageItem ? styles.selectedPage : styles.pageItem}
+                        onClick={() => handleChangeCurrentPage(pageItem)}
+                    >
+                        {pageItem}
+                    </span>
+                ))}
+            </div>
             {users.map((user) => (
                 <div key={user.id}>
                     <span>
@@ -32,10 +58,7 @@ export const Users: React.FC<UsersType> = ({ users, followUser, unfollowUser, se
                             {user.photos.small ? (
                                 <img src={user.photos.small} alt='User avatar' />
                             ) : (
-                                <img
-                                    src={userMock}
-                                    alt='No photo available'
-                                />
+                                <img src={userMock} alt='No photo available' />
                             )}
                         </div>
                         <div>
@@ -51,10 +74,6 @@ export const Users: React.FC<UsersType> = ({ users, followUser, unfollowUser, se
                             <div>{user.name}</div>
                             <div>{user.status}</div>
                         </span>
-                      {/*   <span>
-                            <div>{user.location.city}</div>
-                            <div>{user.location.country}</div>
-                        </span> */}
                     </span>
                 </div>
             ))}
