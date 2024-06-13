@@ -91,5 +91,6 @@ export const actionsTypes = {
     followUser: 'FOLLOW_USER',
     unfollowUser: 'UNFOLLOW_USER',
     setCurrentPage: 'SET_CURRENT_PAGE',
-    setTotalUsersCount: 'SET_TOTAL_USERS_COUNT'
+    setTotalUsersCount: 'SET_TOTAL_USERS_COUNT',
+    toggleIsFetching: 'TOGGLE_IS_FETCHING',
 };

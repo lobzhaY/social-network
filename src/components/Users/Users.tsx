@@ -26,7 +26,7 @@ export const Users: React.FC<UsersType> = ({
 
     useEffect(() => {
         pagesOfCount();
-    }, []);
+    }, [users]);
 
     const pagesOfCount = () => {
         const pagesCount = Math.ceil(totalUsersCount / pageSize);

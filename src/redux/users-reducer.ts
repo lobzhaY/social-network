@@ -80,15 +80,21 @@ export const setCurrentPageActionCreator = (currentPage: number) => ({
 });
 
 export const setTotalUsersCountActionCreator = (totalUsers: number) => ({
-  type: actionsTypes.setTotalUsersCount,
-  payload: totalUsers
-})
+    type: actionsTypes.setTotalUsersCount,
+    payload: totalUsers,
+});
+
+export const toggleIsFetchingActionCreator = (isFetching: boolean) => ({
+    type: actionsTypes.toggleIsFetching,
+    payload: isFetching,
+});
 
 const initialState = {
     users: [],
     totalUsersCount: 0,
     pageSize: 20,
     currentPage: 1,
+    isFetching: false,
 };
 
 export const usersReducer = (state = initialState, action) => {
@@ -98,16 +104,25 @@ export const usersReducer = (state = initialState, action) => {
                 ...state,
                 users: [...action.payload],
             };
+
         case actionsTypes.setCurrentPage:
             return {
                 ...state,
                 currentPage: action.payload,
             };
-          case actionsTypes.setTotalUsersCount:
+
+        case actionsTypes.setTotalUsersCount:
             return {
-              ...state,
-              totalUsersCount: action.payload
-            }
+                ...state,
+                totalUsersCount: action.payload,
+            };
+
+        case actionsTypes.toggleIsFetching:
+            return {
+                ...state,
+                isFetching: action.payload,
+            };
+
         case actionsTypes.followUser:
             return {
                 ...state,

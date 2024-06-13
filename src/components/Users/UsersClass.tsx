@@ -3,17 +3,20 @@ import axios from 'axios';
 import { API_URL, headers } from '../../constants';
 import { Users } from './Users';
 import { UserType } from './UsersType';
+import { Loader } from '../commen';
 
 type UsersAPIType = {
     users: UserType[];
     pageSize: number;
     currentPage: number;
     totalUsersCount: number;
+    isFetching: boolean;
     setUsers: (users: UserType[]) => void;
     followUser: (userId: string) => void;
     unfollowUser: (userId: string) => void;
     setCurrentPage: (currentPage: number) => void;
     setTotalUsersCount: (totalUsers: number) => void;
+    toggleIsFetching: (isFetching: boolean) => void;
 };
 
 export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
@@ -22,6 +25,7 @@ export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
     }
 
     getUsers = (pageItem: number = this.props.currentPage) => {
+        this.props.toggleIsFetching(true);
         axios
             .get(`${API_URL}users?page=${pageItem}&count=${this.props.pageSize}`, {
                 headers,
@@ -32,7 +36,8 @@ export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
                     this.props.setTotalUsersCount(data.data.totalCount);
                 }
             })
-            .catch((e) => console.log(e));
+            .catch((e) => console.log(e))
+            .finally(() => this.props.toggleIsFetching(false));
     };
 
     componentDidMount(): void {
@@ -46,6 +51,10 @@ export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
 
     render() {
         return (
+            <>
+            {
+                this.props.isFetching ? <Loader /> : null
+            }
             <Users
                 handleChangeCurrentPage={this.handleChangeCurrentPage}
                 followUser={this.props.followUser}
@@ -55,6 +64,7 @@ export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
                 totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
             />
+            </>
         );
     }
 }

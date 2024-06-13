@@ -4,13 +4,14 @@ import {
     setCurrentPageActionCreator,
     setTotalUsersCountActionCreator,
     setUsersActionCreator,
+    toggleIsFetchingActionCreator,
     unfollowActionCreator,
 } from '../../redux/users-reducer';
 import { UserType } from './UsersType';
 import { UsersAPIContainer } from './UsersClass';
 
 export const UsersContainer: React.FC = () => {
-    const { users, pageSize, totalUsersCount, currentPage } = useSelector((state) => state.usersPage);
+    const { users, pageSize, totalUsersCount, currentPage, isFetching } = useSelector((state) => state.usersPage);
     const dispatch = useDispatch();
 
     const followUser = (userId: string) => {
@@ -33,6 +34,10 @@ export const UsersContainer: React.FC = () => {
         dispatch(setTotalUsersCountActionCreator(totalUsers));
     };
 
+    const toggleIsFetching = (isFetching: boolean) => {
+        dispatch(toggleIsFetchingActionCreator(isFetching));
+    };
+
     return (
         <UsersAPIContainer
             users={users}
@@ -44,6 +49,8 @@ export const UsersContainer: React.FC = () => {
             unfollowUser={unfollowUser}
             setCurrentPage={setCurrentPage}
             setTotalUsersCount={setTotalUsersCount}
+            isFetching={isFetching}
+            toggleIsFetching={toggleIsFetching}
         />
     );
 };
