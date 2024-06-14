@@ -1,4 +1,5 @@
 import { PostType } from '../components/Profile/MyPosts/MyPostsType';
+import { ProfileType } from '../components/Profile/ProfileType';
 import { actionsTypes } from './store';
 
 export const addPostActionCreator = () => ({
@@ -10,6 +11,11 @@ export const updateNewPostTextActionCreator = (text: string) => ({
     payload: text,
 });
 
+export const setUserProfileActionCreator = (profile: ProfileType) => ({
+    type: actionsTypes.setUserProfile,
+    payload: profile
+})
+
 export const postsData: PostType[] = [
     { id: '3', message: 'И с медведем.', likeCount: 0 },
     { id: '4', message: 'Танцы с бубном.', likeCount: 7 },
@@ -19,6 +25,7 @@ export const postsData: PostType[] = [
 const initialState = {
     posts: postsData,
     newPostText: '',
+    userProfile: null,
 };
 
 export const profileReducer = (state = initialState, action) => {
@@ -41,6 +48,12 @@ export const profileReducer = (state = initialState, action) => {
                 ...state,
                 newPostText: action.payload as string,
             };
+
+        case actionsTypes.setUserProfile: 
+            return {
+                ...state,
+                userProfile: action.payload as ProfileType
+            }
 
         default:
             return state;

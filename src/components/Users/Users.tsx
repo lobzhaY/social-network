@@ -2,6 +2,8 @@ import { UserType } from './UsersType';
 import styles from './Users.module.scss';
 import userMock from '../../assets/images/user-mock.png';
 import { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { ROUTER_PATH } from '../../routes/router-constants';
 
 export type UsersType = {
     users: UserType[];
@@ -20,7 +22,7 @@ export const Users: React.FC<UsersType> = ({
     totalUsersCount,
     pageSize,
     currentPage,
-    handleChangeCurrentPage
+    handleChangeCurrentPage,
 }) => {
     const [pagesCount, setPagesCount] = useState<number[]>([]);
 
@@ -55,11 +57,9 @@ export const Users: React.FC<UsersType> = ({
                 <div key={user.id}>
                     <span>
                         <div className={styles.userAvatar}>
-                            {user.photos.small ? (
-                                <img src={user.photos.small} alt='User avatar' />
-                            ) : (
-                                <img src={userMock} alt='No photo available' />
-                            )}
+                            <NavLink to={`${ROUTER_PATH.profile}/${user.id}`}>
+                                <img src={user.photos.small || userMock} alt='User avatar' />
+                            </NavLink>
                         </div>
                         <div>
                             {user.followed ? (

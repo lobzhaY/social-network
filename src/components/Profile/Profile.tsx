@@ -1,24 +1,19 @@
-import { MyPosts } from './MyPosts';
 import { ProfileInfo } from './ProfileInfo';
 
 import styles from './Profile.module.scss';
-import { PostType } from './MyPosts/MyPostsType';
-import { ActionType } from '../../redux/store';
 import { MyPostsContainer } from './MyPosts/MyPostsContainer';
+import { ProfileType } from './ProfileType';
+import { Loader } from '../commen';
 
-type ProfileType = {
-    state: {
-        posts: PostType[];
-        newPostText: string;
-    };
-    dispatch: (action: ActionType) => void;
+type ProfileComponentType = {
+    userProfile: ProfileType
 };
 
-export const Profile: React.FC<ProfileType> = ({ state, dispatch }) => {
+export const Profile: React.FC<ProfileComponentType> = ({userProfile}) => {
     return (
-        <div>
-            <ProfileInfo />
+        !userProfile ? (<Loader />) : (<div>
+            <ProfileInfo userProfile={userProfile} />
             <MyPostsContainer />
-        </div>
+        </div>)
     );
 };

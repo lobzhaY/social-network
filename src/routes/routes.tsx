@@ -4,6 +4,7 @@ import App from '../App';
 import { ROUTER_PATH } from './router-constants';
 import { store } from '../redux/redux-store';
 import { SuperDialogsContainer } from '../components/Dialogs/DialogsContainer';
+import { ProfileContainer } from '../components/Profile/ProfileContainer';
 
 export const router = createBrowserRouter([
     {
@@ -11,12 +12,9 @@ export const router = createBrowserRouter([
         element: <App />,
         children: [
             {
-                path: ROUTER_PATH.profile,
+                path: `${ROUTER_PATH.profile}/:id?`,
                 element: (
-                    <Profile
-                        state={store.getState().profilePage}
-                        dispatch={store.dispatch.bind(store)}
-                    />
+                    <ProfileContainer />
                 ),
             },
             {

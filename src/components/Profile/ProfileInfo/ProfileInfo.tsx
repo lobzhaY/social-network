@@ -1,6 +1,12 @@
+import { ProfileType } from '../ProfileType';
 import styles from './ProfileInfo.module.scss';
+import userMock from '../../../assets/images/user-mock.png';
 
-export const ProfileInfo: React.FC = () => {
+type ProfileInfoType = {
+    userProfile: ProfileType;
+};
+
+export const ProfileInfo: React.FC<ProfileInfoType> = ({ userProfile }) => {
     return (
         <>
             <div className={styles.imgWrapper}>
@@ -12,11 +18,10 @@ export const ProfileInfo: React.FC = () => {
 
             <div className={styles.descriptionBlock}>
                 <div className={styles.avatar}>
-                    <img
-                        src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSzX1tY0B1vH9BOSr4zTFRPonpnSScRh9NOxghqclcmA&s'
-                        alt=''
-                    />
+                    <img src={userProfile.photos.large || userMock} alt='User avatar' />
                 </div>
+                <h2>{userProfile.fullName}</h2>
+                <p>{userProfile.lookingForAJob && userProfile.lookingForAJobDescription}</p>
             </div>
         </>
     );
