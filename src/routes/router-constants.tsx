@@ -5,4 +5,5 @@ export const ROUTER_PATH = {
     music: '/music',
     settings: '/settings',
     users: '/users',
+    login: '/login'
 };

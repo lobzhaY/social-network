@@ -93,5 +93,6 @@ export const actionsTypes = {
     setCurrentPage: 'SET_CURRENT_PAGE',
     setTotalUsersCount: 'SET_TOTAL_USERS_COUNT',
     toggleIsFetching: 'TOGGLE_IS_FETCHING',
-    setUserProfile: 'SET_USER_PROFILE'
+    setUserProfile: 'SET_USER_PROFILE',
+    setUserData: 'SET_USER_DATA'
 };

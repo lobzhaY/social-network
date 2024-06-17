@@ -36,18 +36,11 @@ class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
 export const ProfileContainer = () => {
     const { userProfile } = useSelector((state) => state.profilePage);
     const dispatch = useDispatch();
-
-    const location = useLocation();
     const params = useParams();
 
     const setUserProfile = (profile: ProfileType) => {
         dispatch(setUserProfileActionCreator(profile));
     };
-
-    useEffect(() => {
-        console.log(location);
-        console.log(params);
-    }, [location]);
 
     return (
         <ProfileAPIContainer
