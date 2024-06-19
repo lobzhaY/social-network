@@ -59,12 +59,12 @@ export const usersData: UserType[] = [
     },
 ];
 
-export const followActionCreator = (userId: string) => ({
+export const followActionCreator = (userId: number) => ({
     type: actionsTypes.followUser,
     payload: userId,
 });
 
-export const unfollowActionCreator = (userId: string) => ({
+export const unfollowActionCreator = (userId: number) => ({
     type: actionsTypes.unfollowUser,
     payload: userId,
 });

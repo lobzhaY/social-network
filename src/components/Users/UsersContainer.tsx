@@ -11,14 +11,16 @@ import { UserType } from './UsersType';
 import { UsersAPIContainer } from './UsersClass';
 
 export const UsersContainer: React.FC = () => {
-    const { users, pageSize, totalUsersCount, currentPage, isFetching } = useSelector((state) => state.usersPage);
+    const { users, pageSize, totalUsersCount, currentPage, isFetching } = useSelector(
+        (state) => state.usersPage,
+    );
     const dispatch = useDispatch();
 
-    const followUser = (userId: string) => {
+    const followUser = (userId: number) => {
         dispatch(followActionCreator(userId));
     };
 
-    const unfollowUser = (userId: string) => {
+    const unfollowUser = (userId: number) => {
         dispatch(unfollowActionCreator(userId));
     };
 

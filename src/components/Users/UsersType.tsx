@@ -1,6 +1,6 @@
 export type UserType = {
     "name": string,
-    "id": string,
+    "id": number,
     "uniqueUrlName": string | null,
     "photos": {
       "small": string | null,

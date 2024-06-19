@@ -12,8 +12,8 @@ type UsersAPIType = {
     totalUsersCount: number;
     isFetching: boolean;
     setUsers: (users: UserType[]) => void;
-    followUser: (userId: string) => void;
-    unfollowUser: (userId: string) => void;
+    followUser: (userId: number) => void;
+    unfollowUser: (userId: number) => void;
     setCurrentPage: (currentPage: number) => void;
     setTotalUsersCount: (totalUsers: number) => void;
     toggleIsFetching: (isFetching: boolean) => void;
@@ -28,6 +28,7 @@ export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
         this.props.toggleIsFetching(true);
         axios
             .get(`${API_URL}users?page=${pageItem}&count=${this.props.pageSize}`, {
+                withCredentials: true,
                 headers,
             })
             .then((data) => {
