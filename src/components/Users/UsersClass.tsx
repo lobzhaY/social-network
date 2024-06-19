@@ -1,9 +1,8 @@
 import React from 'react';
-import axios from 'axios';
-import { API_URL, headers } from '../../constants';
 import { Users } from './Users';
 import { UserType } from './UsersType';
 import { Loader } from '../commen';
+import { getUsersAPI } from '../../api/api';
 
 type UsersAPIType = {
     users: UserType[];
@@ -24,17 +23,14 @@ export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
         super(props);
     }
 
-    getUsers = (pageItem: number = this.props.currentPage) => {
+    getUsers = (pageItem: number, pageSize: number) => {
         this.props.toggleIsFetching(true);
-        axios
-            .get(`${API_URL}users?page=${pageItem}&count=${this.props.pageSize}`, {
-                withCredentials: true,
-                headers,
-            })
-            .then((data) => {
-                this.props.setUsers(data.data.items);
+
+        getUsersAPI(pageItem, pageSize)
+            .then(({ items, totalCount }) => {
+                this.props.setUsers(items);
                 if (0 == this.props.totalUsersCount) {
-                    this.props.setTotalUsersCount(data.data.totalCount);
+                    this.props.setTotalUsersCount(totalCount);
                 }
             })
             .catch((e) => console.log(e))
@@ -42,29 +38,27 @@ export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
     };
 
     componentDidMount(): void {
-        this.getUsers();
+        this.getUsers(this.props.currentPage, this.props.pageSize);
     }
 
     handleChangeCurrentPage = (pageItem: number) => {
         this.props.setCurrentPage(pageItem);
-        this.getUsers(pageItem);
+        this.getUsers(pageItem, this.props.pageSize);
     };
 
     render() {
         return (
             <>
-            {
-                this.props.isFetching ? <Loader /> : null
-            }
-            <Users
-                handleChangeCurrentPage={this.handleChangeCurrentPage}
-                followUser={this.props.followUser}
-                unfollowUser={this.props.unfollowUser}
-                users={this.props.users}
-                currentPage={this.props.currentPage}
-                totalUsersCount={this.props.totalUsersCount}
-                pageSize={this.props.pageSize}
-            />
+                {this.props.isFetching ? <Loader /> : null}
+                <Users
+                    handleChangeCurrentPage={this.handleChangeCurrentPage}
+                    followUser={this.props.followUser}
+                    unfollowUser={this.props.unfollowUser}
+                    users={this.props.users}
+                    currentPage={this.props.currentPage}
+                    totalUsersCount={this.props.totalUsersCount}
+                    pageSize={this.props.pageSize}
+                />
             </>
         );
     }

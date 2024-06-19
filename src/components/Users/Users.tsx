@@ -4,8 +4,7 @@ import userMock from '../../assets/images/user-mock.png';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ROUTER_PATH } from '../../routes/router-constants';
-import axios from 'axios';
-import { API_URL, headers } from '../../constants';
+import { followUserAPI, unfollowUserAPI } from '../../api/api';
 
 export type UsersType = {
     users: UserType[];
@@ -43,10 +42,9 @@ export const Users: React.FC<UsersType> = ({
     };
 
     const handleFollowUser = (id: number) => {
-        axios
-            .post(`${API_URL}follow/${id}`, {}, { withCredentials: true, headers })
-            .then((data) => {
-                if (data.data.resultCode === 0) {
+        followUserAPI(id)
+            .then(({ resultCode }) => {
+                if (resultCode === 0) {
                     followUser(id);
                 }
             })
@@ -54,12 +52,10 @@ export const Users: React.FC<UsersType> = ({
     };
 
     const handleUnfollowUser = (id: number) => {
-        axios
-            .delete(`${API_URL}/follow/${id}`, { withCredentials: true, headers })
-            .then((data) => {
-                if (data.data.resultCode === 0) {
+        unfollowUserAPI(id)
+            .then(({ resultCode }) => {
+                if (resultCode === 0) {
                     unfollowUser(id);
-                   
                 }
             })
             .catch((err) => console.log(err));
@@ -88,7 +84,9 @@ export const Users: React.FC<UsersType> = ({
                         </div>
                         <div>
                             {user.followed ? (
-                                <button onClick={() => handleUnfollowUser(user.id)}>unfollow</button>
+                                <button onClick={() => handleUnfollowUser(user.id)}>
+                                    unfollow
+                                </button>
                             ) : (
                                 <button onClick={() => handleFollowUser(user.id)}>follow</button>
                             )}

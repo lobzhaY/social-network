@@ -1,9 +1,8 @@
 import React from 'react';
 import { Header } from './Header';
-import axios from 'axios';
-import { API_URL, headers } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserDataActionCreator } from '../../redux/auth.reducer';
+import { getCurrentAuthUserAPI } from '../../api/api';
 
 type HeaderAPIContainerType = {
     setUserData: (userId: number, userEmail: string, userLogin: string) => void;
@@ -13,11 +12,10 @@ type HeaderAPIContainerType = {
 
 export class HeaderAPIContainer extends React.Component<HeaderAPIContainerType, {}> {
     componentDidMount(): void {
-        axios
-            .get(`${API_URL}auth/me`, { withCredentials: true })
-            .then((data) => {
-                if (data.data.resultCode === 0) {
-                  const {id, email, login} = data.data.data;
+        getCurrentAuthUserAPI()
+            .then(({resultCode, data}) => {
+                if (resultCode === 0) {
+                  const {id, email, login} = data;
                     this.props.setUserData(
                         id,
                         email,
