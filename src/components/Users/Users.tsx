@@ -11,9 +11,11 @@ export type UsersType = {
     pageSize: number;
     currentPage: number;
     totalUsersCount: number;
+    isProgress: number[];
     followUser: (userId: number) => void;
     unfollowUser: (userId: number) => void;
     handleChangeCurrentPage: (currentPage: number) => void;
+    toggleIsProgress: (isFetching: boolean, isProgress: number) => void;
 };
 
 export const Users: React.FC<UsersType> = ({
@@ -24,6 +26,8 @@ export const Users: React.FC<UsersType> = ({
     pageSize,
     currentPage,
     handleChangeCurrentPage,
+    toggleIsProgress,
+    isProgress,
 }) => {
     const [pagesCount, setPagesCount] = useState<number[]>([]);
 
@@ -42,23 +46,27 @@ export const Users: React.FC<UsersType> = ({
     };
 
     const handleFollowUser = (id: number) => {
+        toggleIsProgress(true, id);
         followUserAPI(id)
             .then(({ resultCode }) => {
                 if (resultCode === 0) {
                     followUser(id);
                 }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.log(err))
+            .finally(() => toggleIsProgress(false, id));
     };
 
     const handleUnfollowUser = (id: number) => {
+        toggleIsProgress(true, id);
         unfollowUserAPI(id)
             .then(({ resultCode }) => {
                 if (resultCode === 0) {
                     unfollowUser(id);
                 }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.log(err))
+            .finally(() => toggleIsProgress(false, id));
     };
 
     return (
@@ -84,11 +92,11 @@ export const Users: React.FC<UsersType> = ({
                         </div>
                         <div>
                             {user.followed ? (
-                                <button onClick={() => handleUnfollowUser(user.id)}>
+                                <button disabled={isProgress.some((id) => user.id === id)} onClick={() => handleUnfollowUser(user.id)}>
                                     unfollow
                                 </button>
                             ) : (
-                                <button onClick={() => handleFollowUser(user.id)}>follow</button>
+                                <button disabled={isProgress.some((id) => user.id === id)} onClick={() => handleFollowUser(user.id)}>follow</button>
                             )}
                         </div>
                     </span>

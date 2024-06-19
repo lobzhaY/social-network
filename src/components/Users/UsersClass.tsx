@@ -10,12 +10,14 @@ type UsersAPIType = {
     currentPage: number;
     totalUsersCount: number;
     isFetching: boolean;
+    isProgress: number[];
     setUsers: (users: UserType[]) => void;
     followUser: (userId: number) => void;
     unfollowUser: (userId: number) => void;
     setCurrentPage: (currentPage: number) => void;
     setTotalUsersCount: (totalUsers: number) => void;
     toggleIsFetching: (isFetching: boolean) => void;
+    toggleIsProgress: (isFetching: boolean, isProgress: number) => void;
 };
 
 export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
@@ -58,6 +60,8 @@ export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
                     currentPage={this.props.currentPage}
                     totalUsersCount={this.props.totalUsersCount}
                     pageSize={this.props.pageSize}
+                    isProgress={this.props.isProgress}
+                    toggleIsProgress={this.props.toggleIsProgress}
                 />
             </>
         );

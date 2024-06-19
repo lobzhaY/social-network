@@ -5,13 +5,14 @@ import {
     setTotalUsersCountActionCreator,
     setUsersActionCreator,
     toggleIsFetchingActionCreator,
+    toggleIsProgressRequestActionCreator,
     unfollowActionCreator,
 } from '../../redux/users-reducer';
 import { UserType } from './UsersType';
 import { UsersAPIContainer } from './UsersClass';
 
 export const UsersContainer: React.FC = () => {
-    const { users, pageSize, totalUsersCount, currentPage, isFetching } = useSelector(
+    const { users, pageSize, totalUsersCount, currentPage, isFetching, isProgressRequest } = useSelector(
         (state) => state.usersPage,
     );
     const dispatch = useDispatch();
@@ -40,6 +41,10 @@ export const UsersContainer: React.FC = () => {
         dispatch(toggleIsFetchingActionCreator(isFetching));
     };
 
+    const toggleIsProgress = (isFetching: boolean, isProgress: number) => {
+        dispatch(toggleIsProgressRequestActionCreator(isFetching, isProgress));
+    }
+
     return (
         <UsersAPIContainer
             users={users}
@@ -53,6 +58,8 @@ export const UsersContainer: React.FC = () => {
             setTotalUsersCount={setTotalUsersCount}
             isFetching={isFetching}
             toggleIsFetching={toggleIsFetching}
+            isProgress={isProgressRequest}
+            toggleIsProgress={toggleIsProgress}
         />
     );
 };
