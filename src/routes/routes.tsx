@@ -3,8 +3,10 @@ import { Music, News, Profile, Settings, UsersContainer } from '../components';
 import App from '../App';
 import { ROUTER_PATH } from './router-constants';
 import { store } from '../redux/redux-store';
-import { SuperDialogsContainer } from '../components/Dialogs/DialogsContainer';
-import { ProfileContainer } from '../components/Profile/ProfileContainer';
+import { AuthRedirectDialogsComponent, SuperDialogsContainer } from '../components/Dialogs/DialogsContainer';
+import { AuthRedirectProfileComponent } from '../components/Profile/ProfileContainer';
+import { Login } from '../components/Login';
+import { withAuthRedirect } from '../hoc/AuthRedirect';
 
 export const router = createBrowserRouter([
     {
@@ -13,14 +15,12 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: `${ROUTER_PATH.profile}/:id?`,
-                element: (
-                    <ProfileContainer />
-                ),
+                element:<AuthRedirectProfileComponent />,
             },
             {
                 path: ROUTER_PATH.dialogs,
                 element: (
-                    <SuperDialogsContainer />
+                    <AuthRedirectDialogsComponent />
                 ),
                 children: [
                     {
@@ -44,6 +44,10 @@ export const router = createBrowserRouter([
             {
                 path: ROUTER_PATH.users,
                 element: <UsersContainer />
+            },
+            {
+                path: ROUTER_PATH.login,
+                element: <Login />
             }
         ],
     },

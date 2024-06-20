@@ -1,14 +1,7 @@
-import { Outlet } from 'react-router-dom';
 import styles from './Dialogs.module.scss';
 import { DialogItem } from './DialogItem';
 import { MessageItem } from './MessageItem';
 import { DialogsType, MessagesType } from './dataType';
-import { RefObject, createRef } from 'react';
-import { ActionType } from '../../redux/store';
-import {
-    addMessageActionCreator,
-    updateNewMessageTextActionCreator,
-} from '../../redux/message-reducer';
 
 type DialogsComponentType = {
     dialogs: DialogsType[];
@@ -48,10 +41,7 @@ export const Dialogs: React.FC<DialogsComponentType> = ({
                 {/*  <Outlet /> */}
                 <div>
                     <div>
-                        <textarea
-                            onChange={handleMessageChange}
-                            value={newMessageText}
-                        ></textarea>
+                        <textarea onChange={handleMessageChange} value={newMessageText}></textarea>
                     </div>
                     <div>
                         <button onClick={handleAddMessage}>Add message</button>
@@ -61,3 +51,5 @@ export const Dialogs: React.FC<DialogsComponentType> = ({
         </div>
     );
 };
+
+

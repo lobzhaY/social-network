@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Profile } from './Profile';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserProfileActionCreator } from '../../redux/profile-reducer';
 import { ProfileType } from './ProfileType';
 import { useParams } from 'react-router-dom';
-import { getProfileUserAPI } from '../../api/api';
 import { getProfileUserThunkCreator } from '../../redux/users-reducer';
+import { withAuthRedirect } from '../../hoc/AuthRedirect';
 
 type ProfileAPIType = {
     userProfile: ProfileType;
@@ -45,3 +44,5 @@ export const ProfileContainer = () => {
         />
     );
 };
+
+export const AuthRedirectProfileComponent: React.FC = withAuthRedirect(ProfileContainer)

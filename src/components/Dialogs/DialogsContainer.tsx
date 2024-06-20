@@ -4,6 +4,7 @@ import {
 } from '../../redux/message-reducer';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Dialogs } from './Dialogs';
+import { withAuthRedirect } from '../../hoc/AuthRedirect';
 
 export const DialogsContainer: React.FC = () => {
     const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const mapStateToProps = (state) => {
     return {
         dialogs: state.messagePage.dialogs,
         messages: state.messagePage.messages,
-        newMessageText: state.messagePage.newMessageText,
+        newMessageText: state.messagePage.newMessageText
     };
 };
 
@@ -44,3 +45,5 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export const SuperDialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
+
+export const AuthRedirectDialogsComponent: React.FC = withAuthRedirect(SuperDialogsContainer);
