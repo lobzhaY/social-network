@@ -1,4 +1,7 @@
+import { followUserAPI, getCurrentAuthUserAPI, getProfileUserAPI, getUsersAPI, unfollowUserAPI } from '../api/api';
 import { UserType } from '../components/Users/UsersType';
+import { setUserDataActionCreator } from './auth.reducer';
+import { setUserProfileActionCreator } from './profile-reducer';
 import { actionsTypes } from './store';
 
 export const followActionCreator = (userId: number) => ({
@@ -31,13 +34,74 @@ export const toggleIsFetchingActionCreator = (isFetching: boolean) => ({
     payload: isFetching,
 });
 
-export const toggleIsProgressRequestActionCreator = (isFetching: boolean, isProgressId: number) => ({
+export const toggleIsProgressRequestActionCreator = (
+    isFetching: boolean,
+    isProgressId: number,
+) => ({
     type: actionsTypes.toggleIsProgressRequest,
     payload: {
         isFetching,
-        isProgressId
+        isProgressId,
     },
 });
+
+export const getUsersThunkCreator = (pageItem: number, pageSize: number) => (dispatch) => {
+    dispatch(toggleIsFetchingActionCreator(true));
+
+    getUsersAPI(pageItem, pageSize)
+        .then(({ items, totalCount }) => {
+            dispatch(setUsersActionCreator(items));
+            dispatch(setTotalUsersCountActionCreator(totalCount));
+        })
+        .catch((e) => console.log(e))
+        .finally(() => dispatch(toggleIsFetchingActionCreator(false)));
+};
+
+export const followUserThunkCreator = (id: number) => (dispatch) => {
+    dispatch(toggleIsProgressRequestActionCreator(true, id));
+        followUserAPI(id)
+            .then(({ resultCode }) => {
+                if (resultCode === 0) {
+                    dispatch(followActionCreator(id));
+                }
+            })
+            .catch((err) => console.log(err))
+            .finally(() => dispatch(toggleIsProgressRequestActionCreator(false, id)));
+}
+
+export const unfollowUserThunkCreator = (id: number) => (dispatch) => {
+    dispatch(toggleIsProgressRequestActionCreator(true, id));
+    unfollowUserAPI(id)
+        .then(({ resultCode }) => {
+            if (resultCode === 0) {
+                dispatch(unfollowActionCreator(id));
+            }
+        })
+        .catch((err) => console.log(err))
+        .finally(() => dispatch(toggleIsProgressRequestActionCreator(false, id)));
+};
+
+export const getProfileUserThunkCreator = (id: string) => (dispatch) => {
+    getProfileUserAPI(id)
+            .then((data) => {
+                dispatch(setUserProfileActionCreator(data));
+            })
+            .catch((error) => console.log(error));
+        /* .finally(() => console.log('finally')); */
+}
+
+export const getCurrentAuthUserThunkCreator = () => (dispatch) => {
+    getCurrentAuthUserAPI()
+    .then(({resultCode, data}) => {
+        if (resultCode === 0) {
+          const {id, email, login} = data;
+          dispatch(setUserDataActionCreator(id, email, login));
+        }
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+}
 
 const initialState = {
     users: [],

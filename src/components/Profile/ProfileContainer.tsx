@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { Profile } from './Profile';
-import axios from 'axios';
-import { API_URL, headers } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserProfileActionCreator } from '../../redux/profile-reducer';
 import { ProfileType } from './ProfileType';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { getProfileUserAPI } from '../../api/api';
+import { getProfileUserThunkCreator } from '../../redux/users-reducer';
 
 type ProfileAPIType = {
     userProfile: ProfileType;
     userId: string | undefined;
-    setUserProfile: (profile: ProfileType) => void;
+    setUserProfile: (id: string) => void;
 };
 
 class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
@@ -19,13 +19,8 @@ class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
         if (!this.props.userId) {
             userId = '2';
         }
-        axios
-            .get(`${API_URL}profile/${userId}`, { headers })
-            .then((data) => {
-                this.props.setUserProfile(data.data);
-            })
-            .catch((error) => console.log(error));
-        /* .finally(() => console.log('finally')); */
+        
+        this.props.setUserProfile(userId as string);
     }
 
     render() {
@@ -38,8 +33,8 @@ export const ProfileContainer = () => {
     const dispatch = useDispatch();
     const params = useParams();
 
-    const setUserProfile = (profile: ProfileType) => {
-        dispatch(setUserProfileActionCreator(profile));
+    const setUserProfile = (id: string) => {
+        dispatch(getProfileUserThunkCreator(id));
     };
 
     return (

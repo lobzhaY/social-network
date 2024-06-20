@@ -4,7 +4,6 @@ import userMock from '../../assets/images/user-mock.png';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ROUTER_PATH } from '../../routes/router-constants';
-import { followUserAPI, unfollowUserAPI } from '../../api/api';
 
 export type UsersType = {
     users: UserType[];
@@ -15,7 +14,6 @@ export type UsersType = {
     followUser: (userId: number) => void;
     unfollowUser: (userId: number) => void;
     handleChangeCurrentPage: (currentPage: number) => void;
-    toggleIsProgress: (isFetching: boolean, isProgress: number) => void;
 };
 
 export const Users: React.FC<UsersType> = ({
@@ -26,7 +24,6 @@ export const Users: React.FC<UsersType> = ({
     pageSize,
     currentPage,
     handleChangeCurrentPage,
-    toggleIsProgress,
     isProgress,
 }) => {
     const [pagesCount, setPagesCount] = useState<number[]>([]);
@@ -46,27 +43,11 @@ export const Users: React.FC<UsersType> = ({
     };
 
     const handleFollowUser = (id: number) => {
-        toggleIsProgress(true, id);
-        followUserAPI(id)
-            .then(({ resultCode }) => {
-                if (resultCode === 0) {
-                    followUser(id);
-                }
-            })
-            .catch((err) => console.log(err))
-            .finally(() => toggleIsProgress(false, id));
+        followUser(id);
     };
 
     const handleUnfollowUser = (id: number) => {
-        toggleIsProgress(true, id);
-        unfollowUserAPI(id)
-            .then(({ resultCode }) => {
-                if (resultCode === 0) {
-                    unfollowUser(id);
-                }
-            })
-            .catch((err) => console.log(err))
-            .finally(() => toggleIsProgress(false, id));
+        unfollowUser(id);
     };
 
     return (

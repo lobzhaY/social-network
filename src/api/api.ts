@@ -24,3 +24,7 @@ export const unfollowUserAPI = (id: number) => {
 export const getCurrentAuthUserAPI = () => {
     return instance.get('auth/me').then((response) => response.data);
 };
+
+export const getProfileUserAPI = (id: string) => {
+    return instance.get(`profile/${id}`).then((data) => data.data);
+};

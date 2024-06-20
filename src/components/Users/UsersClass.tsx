@@ -2,7 +2,6 @@ import React from 'react';
 import { Users } from './Users';
 import { UserType } from './UsersType';
 import { Loader } from '../commen';
-import { getUsersAPI } from '../../api/api';
 
 type UsersAPIType = {
     users: UserType[];
@@ -11,13 +10,11 @@ type UsersAPIType = {
     totalUsersCount: number;
     isFetching: boolean;
     isProgress: number[];
-    setUsers: (users: UserType[]) => void;
-    followUser: (userId: number) => void;
-    unfollowUser: (userId: number) => void;
-    setCurrentPage: (currentPage: number) => void;
-    setTotalUsersCount: (totalUsers: number) => void;
-    toggleIsFetching: (isFetching: boolean) => void;
-    toggleIsProgress: (isFetching: boolean, isProgress: number) => void;
+   
+    setCurrentPage: (currentPage: number) => void; 
+    getUsersThunk: (isFetching: number, isProgress: number) => void;
+    unfollowUserThunk: (id: number) => void;
+    followUserThunk: (id: number) => void;
 };
 
 export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
@@ -26,17 +23,7 @@ export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
     }
 
     getUsers = (pageItem: number, pageSize: number) => {
-        this.props.toggleIsFetching(true);
-
-        getUsersAPI(pageItem, pageSize)
-            .then(({ items, totalCount }) => {
-                this.props.setUsers(items);
-                if (0 == this.props.totalUsersCount) {
-                    this.props.setTotalUsersCount(totalCount);
-                }
-            })
-            .catch((e) => console.log(e))
-            .finally(() => this.props.toggleIsFetching(false));
+        this.props.getUsersThunk(pageItem, pageSize);
     };
 
     componentDidMount(): void {
@@ -54,14 +41,13 @@ export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
                 {this.props.isFetching ? <Loader /> : null}
                 <Users
                     handleChangeCurrentPage={this.handleChangeCurrentPage}
-                    followUser={this.props.followUser}
-                    unfollowUser={this.props.unfollowUser}
+                    followUser={this.props.followUserThunk}
+                    unfollowUser={this.props.unfollowUserThunk}
                     users={this.props.users}
                     currentPage={this.props.currentPage}
                     totalUsersCount={this.props.totalUsersCount}
                     pageSize={this.props.pageSize}
                     isProgress={this.props.isProgress}
-                    toggleIsProgress={this.props.toggleIsProgress}
                 />
             </>
         );
