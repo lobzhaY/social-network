@@ -5,6 +5,7 @@ import {
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Dialogs } from './Dialogs';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
+import { compose } from '@reduxjs/toolkit';
 
 export const DialogsContainer: React.FC = () => {
     const dispatch = useDispatch();
@@ -44,6 +45,7 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export const SuperDialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
-
-export const AuthRedirectDialogsComponent: React.FC = withAuthRedirect(SuperDialogsContainer);
+export const AuthRedirectDialogsComponent = compose(
+    withAuthRedirect,
+    connect(mapStateToProps, mapDispatchToProps)
+)(Dialogs);

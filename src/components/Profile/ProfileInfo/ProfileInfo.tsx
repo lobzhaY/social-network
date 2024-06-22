@@ -1,6 +1,7 @@
 import { ProfileType } from '../ProfileType';
 import styles from './ProfileInfo.module.scss';
 import userMock from '../../../assets/images/user-mock.png';
+import { ProfileStatus } from './ProfileStatus';
 
 type ProfileInfoType = {
     userProfile: ProfileType;
@@ -21,6 +22,9 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({ userProfile }) => {
                     <img src={userProfile.photos.large || userMock} alt='User avatar' />
                 </div>
                 <h2>{userProfile.fullName}</h2>
+
+                <ProfileStatus status='frg' />
+
                 <p>{userProfile.lookingForAJob && userProfile.lookingForAJobDescription}</p>
             </div>
         </>
