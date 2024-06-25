@@ -4,10 +4,12 @@ import userMock from '../../../assets/images/user-mock.png';
 import { ProfileStatus } from './ProfileStatus';
 
 type ProfileInfoType = {
+    status: string;
     userProfile: ProfileType;
+    setUserStatus: (status: string) => void;
 };
 
-export const ProfileInfo: React.FC<ProfileInfoType> = ({ userProfile }) => {
+export const ProfileInfo: React.FC<ProfileInfoType> = ({ userProfile, status, setUserStatus }) => {
     return (
         <>
             <div className={styles.imgWrapper}>
@@ -23,7 +25,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({ userProfile }) => {
                 </div>
                 <h2>{userProfile.fullName}</h2>
 
-                <ProfileStatus status='frg' />
+                <ProfileStatus status={status} setUserStatus={setUserStatus} />
 
                 <p>{userProfile.lookingForAJob && userProfile.lookingForAJobDescription}</p>
             </div>

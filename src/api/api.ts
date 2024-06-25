@@ -28,3 +28,11 @@ export const getCurrentAuthUserAPI = () => {
 export const getProfileUserAPI = (id: string) => {
     return instance.get(`profile/${id}`).then((data) => data.data);
 };
+
+export const getUserStatusAPI = (id: string) => {
+    return instance.get(`profile/status/${id}`)
+};
+
+export const updateUserStatusAPI = (status: string) => {
+    return instance.put(`profile/status`, { status }).then((response) => response.data)
+};

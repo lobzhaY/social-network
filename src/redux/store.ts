@@ -95,5 +95,7 @@ export const actionsTypes = {
     toggleIsFetching: 'TOGGLE_IS_FETCHING',
     setUserProfile: 'SET_USER_PROFILE',
     setUserData: 'SET_USER_DATA',
-    toggleIsProgressRequest: 'TOGGLE_IS_PROGRESS_REQUEST'
+    toggleIsProgressRequest: 'TOGGLE_IS_PROGRESS_REQUEST',
+    getUserStatus: 'GET_USER_STATUS',
+    updateUserStatus: 'UPDATE_USER_STATUS'
 };

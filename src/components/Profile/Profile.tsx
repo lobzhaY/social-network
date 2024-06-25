@@ -6,13 +6,15 @@ import { ProfileType } from './ProfileType';
 import { Loader } from '../commen';
 
 type ProfileComponentType = {
-    userProfile: ProfileType
+    status: string;
+    userProfile: ProfileType;
+    setUserStatus: (status: string) => void;
 };
 
-export const Profile: React.FC<ProfileComponentType> = ({userProfile}) => {
+export const Profile: React.FC<ProfileComponentType> = ({userProfile, status, setUserStatus}) => {
     return (
         !userProfile ? (<Loader />) : (<div>
-            <ProfileInfo userProfile={userProfile} />
+            <ProfileInfo userProfile={userProfile} status={status} setUserStatus={setUserStatus} />
             <MyPostsContainer />
         </div>)
     );

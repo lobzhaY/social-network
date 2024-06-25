@@ -14,7 +14,12 @@ export const updateNewPostTextActionCreator = (text: string) => ({
 export const setUserProfileActionCreator = (profile: ProfileType) => ({
     type: actionsTypes.setUserProfile,
     payload: profile
-})
+});
+
+export const getUserStatusActionCreator = (status: string) => ({
+    type: actionsTypes.getUserStatus,
+    payload: status
+});
 
 export const postsData: PostType[] = [
     { id: '3', message: 'И с медведем.', likeCount: 0 },
@@ -26,6 +31,7 @@ const initialState = {
     posts: postsData,
     newPostText: '',
     userProfile: null,
+    status: '',
 };
 
 export const profileReducer = (state = initialState, action) => {
@@ -53,8 +59,14 @@ export const profileReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userProfile: action.payload as ProfileType
-            }
+            };
 
+        case actionsTypes.getUserStatus: 
+            return {
+                ...state,
+                status: action.payload
+            };
+    
         default:
             return state;
     }

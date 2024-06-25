@@ -1,7 +1,15 @@
-import { followUserAPI, getCurrentAuthUserAPI, getProfileUserAPI, getUsersAPI, unfollowUserAPI } from '../api/api';
+import {
+    followUserAPI,
+    getCurrentAuthUserAPI,
+    getProfileUserAPI,
+    getUserStatusAPI,
+    getUsersAPI,
+    unfollowUserAPI,
+    updateUserStatusAPI,
+} from '../api/api';
 import { UserType } from '../components/Users/UsersType';
 import { setUserDataActionCreator } from './auth.reducer';
-import { setUserProfileActionCreator } from './profile-reducer';
+import { getUserStatusActionCreator, setUserProfileActionCreator } from './profile-reducer';
 import { actionsTypes } from './store';
 
 export const followActionCreator = (userId: number) => ({
@@ -59,15 +67,15 @@ export const getUsersThunkCreator = (pageItem: number, pageSize: number) => (dis
 
 export const followUserThunkCreator = (id: number) => (dispatch) => {
     dispatch(toggleIsProgressRequestActionCreator(true, id));
-        followUserAPI(id)
-            .then(({ resultCode }) => {
-                if (resultCode === 0) {
-                    dispatch(followActionCreator(id));
-                }
-            })
-            .catch((err) => console.log(err))
-            .finally(() => dispatch(toggleIsProgressRequestActionCreator(false, id)));
-}
+    followUserAPI(id)
+        .then(({ resultCode }) => {
+            if (resultCode === 0) {
+                dispatch(followActionCreator(id));
+            }
+        })
+        .catch((err) => console.log(err))
+        .finally(() => dispatch(toggleIsProgressRequestActionCreator(false, id)));
+};
 
 export const unfollowUserThunkCreator = (id: number) => (dispatch) => {
     dispatch(toggleIsProgressRequestActionCreator(true, id));
@@ -83,25 +91,43 @@ export const unfollowUserThunkCreator = (id: number) => (dispatch) => {
 
 export const getProfileUserThunkCreator = (id: string) => (dispatch) => {
     getProfileUserAPI(id)
-            .then((data) => {
-                dispatch(setUserProfileActionCreator(data));
-            })
-            .catch((error) => console.log(error));
-        /* .finally(() => console.log('finally')); */
-}
+        .then((data) => {
+            dispatch(setUserProfileActionCreator(data));
+        })
+        .catch((error) => console.log(error));
+    /* .finally(() => console.log('finally')); */
+};
 
 export const getCurrentAuthUserThunkCreator = () => (dispatch) => {
     getCurrentAuthUserAPI()
-    .then(({resultCode, data}) => {
-        if (resultCode === 0) {
-          const {id, email, login} = data;
-          dispatch(setUserDataActionCreator(id, email, login));
-        }
-    })
-    .catch((err) => {
-        console.log(err);
-    });
-}
+        .then(({ resultCode, data }) => {
+            if (resultCode === 0) {
+                const { id, email, login } = data;
+                dispatch(setUserDataActionCreator(id, email, login));
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+export const getStatusUserThunkCreator = (id: string) => (dispatch) => {
+    getUserStatusAPI(id)
+        .then(({data}) => {
+             dispatch(getUserStatusActionCreator(data)); 
+        })
+        .catch((err) => console.log(err));
+};
+
+export const updateStatusUserThunkCreator = (status: string) => (dispatch) => {
+    updateUserStatusAPI(status)
+        .then(({resultCode}) => {
+            if (resultCode === 0) {
+                dispatch(getUserStatusActionCreator(status)); 
+            }
+        })
+        .catch((err) => console.log(err));
+};
 
 const initialState = {
     users: [],
