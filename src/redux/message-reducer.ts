@@ -1,13 +1,9 @@
 import { DialogsType, MessagesType } from '../components/Dialogs/dataType';
 import { actionsTypes } from './store';
 
-export const addMessageActionCreator = () => ({
+export const addMessageActionCreator = (text: string) => ({
     type: actionsTypes.addMessage,
-});
-
-export const updateNewMessageTextActionCreator = (text: string) => ({
-    type: actionsTypes.updateNewMessageText,
-    payload: text,
+    payload: text
 });
 
 export const dialogsData: DialogsType[] = [
@@ -29,7 +25,6 @@ export const messagesData: MessagesType[] = [
 const initialState = {
     dialogs: dialogsData,
     messages: messagesData,
-    newMessageText: '',
 };
 
 export const messageReducer = (state = initialState, action) => {
@@ -37,19 +32,12 @@ export const messageReducer = (state = initialState, action) => {
         case actionsTypes.addMessage:
             const newMessage: { id: string; message: string } = {
                 id: '6',
-                message: state.newMessageText,
+                message: action.payload,
             };
 
             return {
                 ...state,
-                newMessageText: '',
                 messages: [...state.messages, newMessage],
-            };
-
-        case actionsTypes.updateNewMessageText:
-            return {
-                ...state,
-                newMessageText: action.payload as string,
             };
 
         default:

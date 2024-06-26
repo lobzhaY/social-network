@@ -2,13 +2,9 @@ import { PostType } from '../components/Profile/MyPosts/MyPostsType';
 import { ProfileType } from '../components/Profile/ProfileType';
 import { actionsTypes } from './store';
 
-export const addPostActionCreator = () => ({
+export const addPostActionCreator = (text: string) => ({
     type: actionsTypes.addPost,
-});
-
-export const updateNewPostTextActionCreator = (text: string) => ({
-    type: actionsTypes.updateNewPostText,
-    payload: text,
+    payload: text
 });
 
 export const setUserProfileActionCreator = (profile: ProfileType) => ({
@@ -39,7 +35,7 @@ export const profileReducer = (state = initialState, action) => {
         case actionsTypes.addPost:
             const newPost: PostType = {
                 id: '5',
-                message: state.newPostText,
+                message: action.payload,
                 likeCount: 0,
             };
 
@@ -47,12 +43,6 @@ export const profileReducer = (state = initialState, action) => {
                 ...state,
                 newPostText: '',
                 posts: [...state.posts, newPost],
-            };
-
-        case actionsTypes.updateNewPostText:
-            return {
-                ...state,
-                newPostText: action.payload as string,
             };
 
         case actionsTypes.setUserProfile: 
