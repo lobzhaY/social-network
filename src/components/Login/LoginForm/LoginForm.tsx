@@ -1,5 +1,6 @@
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
+import styles from './LoginForm.module.scss';
 
 const validateLoginForm = values => {
   const errors = {};
@@ -35,15 +36,18 @@ export const LoginForm: React.FC = () => {
                console.log( values )
             }}
          >
-            {() => (
+            {({ errors, touched, validateField, validateForm }) => (
                <Form>
-                  <div>
+                  <div className="form-group">
                      <Field
                         name={'email'}
                         type={'text'}
-                        placeholder={'e-mail'} />
+                        placeholder={'e-mail'}
+                        className={`form-control ${
+                           touched.email && errors.email ? styles.isInvalid : ""
+                         }`} />
                   </div>
-                  <ErrorMessage name="email" component="div" />
+                  {errors.email && touched.email &&  <ErrorMessage name="email" component="div"  className={styles.invalidFeedback} /> }
 
                   <div>
                      <Field
