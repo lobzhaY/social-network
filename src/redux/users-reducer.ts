@@ -103,7 +103,7 @@ export const getCurrentAuthUserThunkCreator = () => (dispatch) => {
         .then(({ resultCode, data }) => {
             if (resultCode === 0) {
                 const { id, email, login } = data;
-                dispatch(setUserDataActionCreator(id, email, login));
+                dispatch(setUserDataActionCreator(id, email, login, true));
             }
         })
         .catch((err) => {

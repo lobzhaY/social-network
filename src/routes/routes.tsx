@@ -1,12 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Music, News, Profile, Settings, UsersContainer } from '../components';
+import { Music, News, Settings, UsersContainer } from '../components';
 import App from '../App';
 import { ROUTER_PATH } from './router-constants';
-import { store } from '../redux/redux-store';
-import { AuthRedirectDialogsComponent, SuperDialogsContainer } from '../components/Dialogs/DialogsContainer';
+import { AuthRedirectDialogsComponent } from '../components/Dialogs/DialogsContainer';
 import { AuthRedirectProfileComponent } from '../components/Profile/ProfileContainer';
 import { Login } from '../components/Login';
-import { withAuthRedirect } from '../hoc/AuthRedirect';
 
 export const router = createBrowserRouter([
     {

@@ -10,6 +10,12 @@
 }
 
 .loginBlock {
+  width: 200px;
   border: 1px solid pink;
 
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }

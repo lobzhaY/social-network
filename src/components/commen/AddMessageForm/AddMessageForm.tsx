@@ -16,7 +16,7 @@ export const AddMassageForm: React.FC<AddMessageFormType> = ({ buttonTitle, send
         if (!values.newMessageBody) {
            errors.newMessageBody = 'Required 1';
         } else if (
-           values.newMessageBody.length < 10
+           values.newMessageBody.length > 50
         ) {
            errors.newMessageBody = 'Invalid newMessageBody';
         }

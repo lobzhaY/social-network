@@ -30,9 +30,19 @@ export const getProfileUserAPI = (id: string) => {
 };
 
 export const getUserStatusAPI = (id: string) => {
-    return instance.get(`profile/status/${id}`)
+    return instance.get(`profile/status/${id}`);
 };
 
 export const updateUserStatusAPI = (status: string) => {
-    return instance.put(`profile/status`, { status }).then((response) => response.data)
+    return instance.put(`profile/status`, { status }).then((response) => response.data);
+};
+
+export const loginAPI = (email: string, password: string, rememberMe: boolean = false) => {
+    return instance
+        .post('auth/login', { email, password, rememberMe })
+        .then((response) => response.data);
+};
+
+export const logoutAPI = () => {
+    return instance.delete('auth/login').then((response) => response.data);
 };

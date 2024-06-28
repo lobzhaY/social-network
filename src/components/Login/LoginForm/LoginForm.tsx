@@ -1,6 +1,7 @@
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import styles from './LoginForm.module.scss';
+import { useNavigate } from "react-router-dom";
 
 const validateLoginForm = values => {
   const errors = {};
@@ -18,12 +19,16 @@ const validationSchemaLoginForm = Yup.object().shape( {
 
   password: Yup.string()
      .min( 2, "Must be longer than 2 characters" )
-     .max( 5, "Must be shorter than 5 characters" )
+     .max( 15, "Must be shorter than 15 characters" )
      .required( "Required 2" )
 } );
 
-export const LoginForm: React.FC = () => {
-  return (
+type LoginFormProps = {
+   loginUser: (email: string, password: string, rememberMe: boolean) => void;
+};
+
+export const LoginForm: React.FC<LoginFormProps> = ({ loginUser }) => {   
+   return (
     <Formik
             initialValues={{
                email: "",
@@ -33,7 +38,8 @@ export const LoginForm: React.FC = () => {
             validate={validateLoginForm}
             validationSchema={validationSchemaLoginForm}
             onSubmit={(values) => {
-               console.log( values )
+               loginUser(values.email, values.password, values.rememberMe);
+               
             }}
          >
             {({ errors, touched, validateField, validateForm }) => (

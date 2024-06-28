@@ -7,9 +7,10 @@ import { ROUTER_PATH } from '../../routes/router-constants';
 type HeaderType = {
     isAuth: boolean;
     userLogin: string;
+    logout: () => void;
 };
 
-export const Header: React.FC<HeaderType> = ({ isAuth, userLogin }) => {
+export const Header: React.FC<HeaderType> = ({ isAuth, userLogin, logout }) => {
     const theme = useContext(ThemeContext);
 
     return (
@@ -22,7 +23,14 @@ export const Header: React.FC<HeaderType> = ({ isAuth, userLogin }) => {
                 />
             </div>
             <div className={styles.loginBlock}>
-                {isAuth ? <p>{userLogin}</p> : <NavLink to={ROUTER_PATH.login}>Login</NavLink>}
+                {isAuth ? (
+                    <div>
+                        <p>{userLogin}</p>
+                        <button onClick={logout}>Log out</button>
+                    </div>
+                ) : (
+                    <NavLink to={ROUTER_PATH.login}>Login</NavLink>
+                )}
             </div>
         </header>
     );
