@@ -10,6 +10,8 @@ type ProfileAPIType = {
     status: string;
     userProfile: ProfileType;
     userId: string | undefined;
+    authorizedUserId: string;
+    isAuth: boolean;
     setUserProfile: (id: string) => void;
     getUserStatus: (id: string) => void;
     setUserStatus: (id: string) => void;
@@ -19,7 +21,7 @@ class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
     componentDidMount(): void {
         let userId = this.props.userId;
         if (!this.props.userId) {
-            userId = ' 31343';
+            userId = this.props.authorizedUserId;
         }
         
         this.props.setUserProfile(userId as string);
@@ -33,7 +35,8 @@ class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
 
 export const ProfileContainer = () => {
     const { userProfile, status } = useSelector((state) => state.profilePage);
-   
+   const { userId, isAuth } = useSelector((state) => state.auth);
+
     const dispatch = useDispatch();
     const params = useParams();
 
@@ -56,7 +59,9 @@ export const ProfileContainer = () => {
             getUserStatus={getUserStatus}
             userProfile={userProfile}
             userId={params.id}
+            authorizedUserId={userId}
             status={status}
+            isAuth={isAuth}
         />
     );
 };

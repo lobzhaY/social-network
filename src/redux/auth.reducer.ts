@@ -39,12 +39,14 @@ export const authReducer = (state = initialState, action) => {
 };
 
 export const loginThunkCreator =
-    (email, password, rememberMe) =>
+    (email, password, rememberMe, setStatus) =>
     (dispatch) => {
         loginAPI(email, password, rememberMe)
-            .then(({ resultCode }) => {
+            .then(({ resultCode, messages }) => {
                 if (resultCode === 0) {
                     dispatch(getCurrentAuthUserThunkCreator());
+                } else {
+                    setStatus({error: messages});
                 }
             })
             .catch((error) => console.log(error));

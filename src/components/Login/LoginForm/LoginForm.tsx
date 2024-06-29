@@ -1,7 +1,6 @@
-import {Formik, Form, Field, ErrorMessage} from "formik";
+import {Formik, Form, Field, ErrorMessage, useFormik as useFormic} from "formik";
 import * as Yup from "yup";
 import styles from './LoginForm.module.scss';
-import { useNavigate } from "react-router-dom";
 
 const validateLoginForm = values => {
   const errors = {};
@@ -24,10 +23,19 @@ const validationSchemaLoginForm = Yup.object().shape( {
 } );
 
 type LoginFormProps = {
-   loginUser: (email: string, password: string, rememberMe: boolean) => void;
+   loginUser: (email: string, password: string, rememberMe: boolean, setStatus: any) => void;
 };
 
+/* 
+let apiErrors
+    if(formik.status) {
+        //console.log(formik.status.error)
+        apiErrors = formik.status.error.map((item, index) => <p key={index}>{item}</p>)
+    }
+*/
+
 export const LoginForm: React.FC<LoginFormProps> = ({ loginUser }) => {   
+
    return (
     <Formik
             initialValues={{
@@ -37,12 +45,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({ loginUser }) => {
             }}
             validate={validateLoginForm}
             validationSchema={validationSchemaLoginForm}
-            onSubmit={(values) => {
-               loginUser(values.email, values.password, values.rememberMe);
-               
+            onSubmit={(values, submitProps) => {
+               loginUser(values.email, values.password, values.rememberMe, submitProps.setStatus);
+               submitProps.resetForm()
             }}
          >
-            {({ errors, touched, validateField, validateForm }) => (
+            {({ errors, touched, validateField, validateForm, status }) => (
                <Form>
                   <div className="form-group">
                      <Field
@@ -71,7 +79,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({ loginUser }) => {
                      <label htmlFor={'rememberMe'}> remember me </label>
                   </div>
 
+                  {status && status.error.length > 0 && status.error.map((item, index) => (
+                  <p key={index} className={styles.invalidFeedback}>{item}</p>
+               ))}
+
                   <button type={'submit'}>Login</button>
+
                </Form>
             )}
          </Formik>

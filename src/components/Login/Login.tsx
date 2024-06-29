@@ -11,8 +11,8 @@ export const Login: React.FC = () => {
 
     const {isAuth} = useSelector((state) => state.auth)
 
-    const loginUser = (email: string, password: string, rememberMe: boolean) => {
-        dispatch(loginThunkCreator(email, password, rememberMe))
+    const loginUser = (email: string, password: string, rememberMe: boolean, setStatus: any) => {
+        dispatch(loginThunkCreator(email, password, rememberMe, setStatus))
     }
 
     if (isAuth) {
