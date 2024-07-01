@@ -1,8 +1,7 @@
 import React from 'react';
 import { Header } from './Header';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentAuthUserThunkCreator } from '../../redux/users-reducer';
 import { logoutThunkCreator } from '../../redux/auth.reducer';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 type HeaderAPIContainerType = {
     setUserData: () => void;
@@ -25,8 +24,8 @@ export class HeaderAPIContainer extends React.Component<HeaderAPIContainerType, 
 }
 
 export const HeaderContainer = () => {
-    const { userLogin, isAuth } = useSelector((state) => state.auth);
-    const dispatch = useDispatch();
+    const { userLogin, isAuth } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
 
     const logout = () => {
         dispatch(logoutThunkCreator());

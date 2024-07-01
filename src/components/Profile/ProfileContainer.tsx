@@ -1,14 +1,14 @@
 import React from 'react';
 import { Profile } from './Profile';
-import { useDispatch, useSelector } from 'react-redux';
 import { ProfileType } from './ProfileType';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProfileUserThunkCreator, getStatusUserThunkCreator, updateStatusUserThunkCreator } from '../../redux/users-reducer';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 type ProfileAPIType = {
     status: string;
-    userProfile: ProfileType;
+    userProfile: ProfileType | null;
     userId: string | undefined;
     authorizedUserId: string;
     isAuth: boolean;
@@ -39,10 +39,10 @@ class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
 }
 
 export const ProfileContainer = () => {
-    const { userProfile, status } = useSelector((state) => state.profilePage);
-   const { userId, isAuth } = useSelector((state) => state.auth);
+    const { userProfile, status } = useAppSelector((state) => state.profilePage);
+   const { userId, isAuth } = useAppSelector((state) => state.auth);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const params = useParams();
 
     const navigate = useNavigate();

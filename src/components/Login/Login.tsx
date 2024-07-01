@@ -1,15 +1,14 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { LoginForm } from './LoginForm';
-import { useDispatch, useSelector } from 'react-redux';
 import { loginThunkCreator } from '../../redux/auth.reducer';
 import { useNavigate } from 'react-router-dom';
 import { ROUTER_PATH } from '../../routes/router-constants';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export const Login: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const {isAuth} = useSelector((state) => state.auth)
+    const {isAuth} = useAppSelector((state) => state.auth)
 
     const loginUser = (email: string, password: string, rememberMe: boolean, setStatus: any) => {
         dispatch(loginThunkCreator(email, password, rememberMe, setStatus))

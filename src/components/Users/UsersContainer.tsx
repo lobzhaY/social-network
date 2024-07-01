@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux';
 import {
     followUserThunkCreator,
     getUsersThunkCreator,
@@ -6,11 +5,12 @@ import {
     unfollowUserThunkCreator,
 } from '../../redux/users-reducer';
 import { UsersAPIContainer } from './UsersClass';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export const UsersContainer: React.FC = () => {
     const { users, pageSize, totalUsersCount, currentPage, isFetching, isProgressRequest } =
-        useSelector((state) => state.usersPage);
-    const dispatch = useDispatch();
+        useAppSelector((state) => state.usersPage);
+    const dispatch = useAppDispatch();
 
     const setCurrentPage = (currentPage: number) => {
         dispatch(setCurrentPageActionCreator(currentPage));

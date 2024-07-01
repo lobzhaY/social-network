@@ -26,13 +26,6 @@ type LoginFormProps = {
    loginUser: (email: string, password: string, rememberMe: boolean, setStatus: any) => void;
 };
 
-/* 
-let apiErrors
-    if(formik.status) {
-        //console.log(formik.status.error)
-        apiErrors = formik.status.error.map((item, index) => <p key={index}>{item}</p>)
-    }
-*/
 
 export const LoginForm: React.FC<LoginFormProps> = ({ loginUser }) => {   
 

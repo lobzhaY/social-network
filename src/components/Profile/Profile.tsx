@@ -7,7 +7,7 @@ import { Loader } from '../commen';
 
 type ProfileComponentType = {
     status: string;
-    userProfile: ProfileType;
+    userProfile: ProfileType | null;
     setUserStatus: (status: string) => void;
 };
 
