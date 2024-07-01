@@ -99,7 +99,7 @@ export const getProfileUserThunkCreator = (id: string) => (dispatch) => {
 };
 
 export const getCurrentAuthUserThunkCreator = () => (dispatch) => {
-    getCurrentAuthUserAPI()
+    return getCurrentAuthUserAPI()
         .then(({ resultCode, data }) => {
             if (resultCode === 0) {
                 const { id, email, login } = data;
@@ -113,17 +113,17 @@ export const getCurrentAuthUserThunkCreator = () => (dispatch) => {
 
 export const getStatusUserThunkCreator = (id: string) => (dispatch) => {
     getUserStatusAPI(id)
-        .then(({data}) => {
-             dispatch(getUserStatusActionCreator(data)); 
+        .then(({ data }) => {
+            dispatch(getUserStatusActionCreator(data));
         })
         .catch((err) => console.log(err));
 };
 
 export const updateStatusUserThunkCreator = (status: string) => (dispatch) => {
     updateUserStatusAPI(status)
-        .then(({resultCode}) => {
+        .then(({ resultCode }) => {
             if (resultCode === 0) {
-                dispatch(getUserStatusActionCreator(status)); 
+                dispatch(getUserStatusActionCreator(status));
             }
         })
         .catch((err) => console.log(err));

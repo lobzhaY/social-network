@@ -12,9 +12,6 @@ type HeaderAPIContainerType = {
 };
 
 export class HeaderAPIContainer extends React.Component<HeaderAPIContainerType, {}> {
-    componentDidMount(): void {
-        this.props.setUserData();
-    }
 
     render() {
         return (
@@ -31,17 +28,12 @@ export const HeaderContainer = () => {
     const { userLogin, isAuth } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
-    const setUserData = () => {
-        dispatch(getCurrentAuthUserThunkCreator());
-    };
-
     const logout = () => {
         dispatch(logoutThunkCreator());
     };
 
     return (
-        <HeaderAPIContainer
-            setUserData={setUserData}
+        <Header
             isAuth={isAuth}
             userLogin={userLogin}
             logout={logout}

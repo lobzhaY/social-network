@@ -95,5 +95,6 @@ export const actionsTypes = {
     setUserData: 'SET_USER_DATA',
     toggleIsProgressRequest: 'TOGGLE_IS_PROGRESS_REQUEST',
     getUserStatus: 'GET_USER_STATUS',
-    updateUserStatus: 'UPDATE_USER_STATUS'
+    updateUserStatus: 'UPDATE_USER_STATUS',
+    setInitialized: 'SET_INITIALIZED'
 };

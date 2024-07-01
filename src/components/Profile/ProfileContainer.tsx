@@ -2,7 +2,7 @@ import React from 'react';
 import { Profile } from './Profile';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProfileType } from './ProfileType';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getProfileUserThunkCreator, getStatusUserThunkCreator, updateStatusUserThunkCreator } from '../../redux/users-reducer';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
 
@@ -15,6 +15,7 @@ type ProfileAPIType = {
     setUserProfile: (id: string) => void;
     getUserStatus: (id: string) => void;
     setUserStatus: (id: string) => void;
+    navigate: any;
 };
 
 class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
@@ -22,6 +23,10 @@ class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
         let userId = this.props.userId;
         if (!this.props.userId) {
             userId = this.props.authorizedUserId;
+            
+            if (!userId) {
+                this.props.navigate('/login');
+            }
         }
         
         this.props.setUserProfile(userId as string);
@@ -39,6 +44,8 @@ export const ProfileContainer = () => {
 
     const dispatch = useDispatch();
     const params = useParams();
+
+    const navigate = useNavigate();
 
     const setUserProfile = (id: string) => {
         dispatch(getProfileUserThunkCreator(id));
@@ -62,6 +69,7 @@ export const ProfileContainer = () => {
             authorizedUserId={userId}
             status={status}
             isAuth={isAuth}
+            navigate={navigate}
         />
     );
 };
