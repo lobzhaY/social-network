@@ -1,6 +1,8 @@
+
 import { DialogsType, MessagesType } from '../components/Dialogs/dataType';
 import { RootState } from './redux-store';
 import { actionsTypes } from './store';
+import { createSelectorHook } from 'react-redux';
 
 export const addMessageActionCreator = (text: string) => ({
     type: actionsTypes.addMessage,
@@ -34,7 +36,7 @@ export const getDialogsSelector = (state: RootState) => {
 
 export const getMessagesSelector = (state: RootState) => {
     return  state.messagePage.messages
-}
+};
 
 export const messageReducer = (state = initialState, action) => {
     switch (action.type) {

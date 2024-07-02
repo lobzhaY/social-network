@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 type ProfileStatusPropsType = {
     status: string;
@@ -10,7 +10,47 @@ type ProfileStatusStateType = {
     status: string;
 };
 
-export class ProfileStatus extends React.Component<ProfileStatusPropsType, ProfileStatusStateType> {
+export const ProfileStatus: React.FC<ProfileStatusPropsType> = ({status, setUserStatus}) => {
+    const [editMode, setEditMode] = useState(false);
+    const [statusState, setStatusState] = useState(status);
+
+    const handleActivateEditMode = () => {
+        setEditMode(true);
+    };
+
+    const handleDeactivateEditMode = () => {
+        setEditMode(false);
+        setUserStatus(statusState);
+    };
+
+    const handleChangeStatus = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setStatusState(e.target.value);
+    };
+
+    return (
+        <div>
+                {!editMode ? (
+                    <div>
+                        <span onDoubleClick={() => handleActivateEditMode()}>
+                            {status || '-----'}
+                        </span>
+                    </div>
+                ) : (
+                    <div>
+                        <input
+                            autoFocus
+                            type='text'
+                            value={statusState}
+                            onChange={handleChangeStatus}
+                            onBlur={() => handleDeactivateEditMode()}
+                        />
+                    </div>
+                )}
+            </div>
+    )
+}
+
+/* export class ProfileStatus extends React.Component<ProfileStatusPropsType, ProfileStatusStateType> {
     state = {
         editMode: false,
         status: this.props.status,
@@ -63,3 +103,4 @@ export class ProfileStatus extends React.Component<ProfileStatusPropsType, Profi
         );
     }
 }
+ */
