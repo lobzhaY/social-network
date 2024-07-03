@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Profile } from './Profile';
 import { ProfileType } from './ProfileType';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -21,6 +21,7 @@ type ProfileAPIType = {
 class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
     componentDidMount(): void {
         let userId = this.props.userId;
+        
         if (!this.props.userId) {
             userId = this.props.authorizedUserId;
             
@@ -28,7 +29,7 @@ class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
                 this.props.navigate('/login');
             }
         }
-        
+
         this.props.setUserProfile(userId as string);
         this.props.getUserStatus(userId as string);
     }
