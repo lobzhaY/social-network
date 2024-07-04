@@ -2,13 +2,14 @@ import styles from './MyPosts.module.scss';
 import { PostType } from './MyPostsType';
 import { Post } from './Post';
 import { AddMassageForm } from '../../commen';
+import React from 'react';
 
 type MyPostsType = {
     posts: PostType[];
     addPost: (text: string) => void;
 };
 
-export const MyPosts: React.FC<MyPostsType> = ({ posts, addPost }) => {
+export const MyPosts: React.FC<MyPostsType> = React.memo(({ posts, addPost }) => {
 
     return (
         <div className={styles.postsBlock}>
@@ -23,4 +24,4 @@ export const MyPosts: React.FC<MyPostsType> = ({ posts, addPost }) => {
             </div>
         </div>
     );
-};
+});
