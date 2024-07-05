@@ -17,6 +17,11 @@ export const getUserStatusActionCreator = (status: string) => ({
     payload: status
 });
 
+export const deletePostActionCreator = (id: string) => ({
+    type: actionsTypes.deletePost,
+    payload: id
+})
+
 export const postsData: PostType[] = [
     { id: '3', message: 'И с медведем.', likeCount: 0 },
     { id: '4', message: 'Танцы с бубном.', likeCount: 7 },
@@ -56,6 +61,13 @@ export const profileReducer = (state = initialState, action) => {
                 ...state,
                 status: action.payload
             };
+
+        case actionsTypes.deletePost:
+            const posts = [...state.posts].filter((post) => post.id !== action.payload);
+            return {
+                ...state,
+                posts
+            }
     
         default:
             return state;

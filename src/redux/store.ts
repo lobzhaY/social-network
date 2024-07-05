@@ -96,5 +96,6 @@ export const actionsTypes = {
     toggleIsProgressRequest: 'TOGGLE_IS_PROGRESS_REQUEST',
     getUserStatus: 'GET_USER_STATUS',
     updateUserStatus: 'UPDATE_USER_STATUS',
-    setInitialized: 'SET_INITIALIZED'
+    setInitialized: 'SET_INITIALIZED',
+    deletePost: 'DELETE_POST'
 };
