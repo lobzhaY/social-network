@@ -5,12 +5,10 @@ import { FriendType } from './NavbarType';
 import { Friend } from './Friend';
 
 type NavbarType = {
-    state: {
-        friends: FriendType[];
-    };
+    friends: FriendType[];
 };
 
-export const Navbar: React.FC<NavbarType> = ({ state }) => {
+export const Navbar: React.FC<NavbarType> = ({ friends }) => {
     return (
         <nav className={styles.nav}>
             <div className={styles.item}>
@@ -65,7 +63,7 @@ export const Navbar: React.FC<NavbarType> = ({ state }) => {
             <div>
                 <h3>Friends</h3>
                 <div className={styles.friendsContainer}>
-                    {state.friends.map((friend) => (
+                    {friends.map((friend) => (
                         <Friend key={friend.id} friend={friend} />
                     ))}
                 </div>

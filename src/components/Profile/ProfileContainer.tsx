@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Profile } from './Profile';
 import { ProfileType } from './ProfileType';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getProfileUserThunkCreator, getStatusUserThunkCreator, updateStatusUserThunkCreator } from '../../redux/users-reducer';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getProfileUserThunkCreator, getStatusUserThunkCreator, updateStatusUserThunkCreator } from '../../redux/profile-reducer';
 
 type ProfileAPIType = {
     status: string;

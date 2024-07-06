@@ -1,6 +1,4 @@
 import { ProfileInfo } from './ProfileInfo';
-
-import styles from './Profile.module.scss';
 import { MyPostsContainer } from './MyPosts/MyPostsContainer';
 import { ProfileType } from './ProfileType';
 import { Loader } from '../commen';

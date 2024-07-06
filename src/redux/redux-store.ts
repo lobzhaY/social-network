@@ -13,7 +13,7 @@ const reducers = combineReducers({
   sidebar: sidebarReducer,
   usersPage: usersReducer,
   auth: authReducer,
-  app: appReducer
+  app: appReducer,
 })
 
 export const store = configureStore({

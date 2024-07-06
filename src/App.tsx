@@ -1,16 +1,19 @@
-import { Outlet } from 'react-router-dom';
-import './App.scss';
-import { Navbar } from './components';
-import { store } from './redux/store';
-import { HeaderContainer } from './components/Header';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
+import { Outlet } from 'react-router-dom';
 import { initializeAppThunkCreator } from './redux/app.reducer';
+import { useAppDispatch, useAppSelector } from './hooks';
+
+import { Navbar } from './components';
+import { HeaderContainer } from './components/Header';
 import { Loader } from './components/commen';
 
+import './App.scss';
+
 function App() {
-    const dispatch = useDispatch();
-    const { initialized } = useSelector((state) => state.app);
+    const dispatch = useAppDispatch();
+    const { initialized } = useAppSelector((state) => state.app);
+    const { friends } = useAppSelector((state) => state.sidebar);
 
     useEffect(() => {
         dispatch(initializeAppThunkCreator());
@@ -20,13 +23,13 @@ function App() {
         <>
             {!initialized ? (
                 <>
-                <h1>LOADER</h1>
-                <Loader />
+                    <h1>LOADER</h1>
+                    <Loader />
                 </>
             ) : (
                 <div className='app-wrapper'>
                     <HeaderContainer />
-                    <Navbar state={store.getState().sidebar} />
+                    <Navbar friends={friends} />
                     <div className='app-wrapper-content'>
                         <Outlet />
                     </div>

@@ -23,7 +23,6 @@ export const ProfileStatus: React.FC<ProfileStatusPropsType> = ({status, setUser
     };
 
     useEffect(() => {
-        console.log(status);
         setStatusState(status);
     }, [status]);
 

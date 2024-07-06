@@ -2,7 +2,6 @@
 import { DialogsType, MessagesType } from '../components/Dialogs/dataType';
 import { RootState } from './redux-store';
 import { actionsTypes } from './store';
-import { createSelectorHook } from 'react-redux';
 
 export const addMessageActionCreator = (text: string) => ({
     type: actionsTypes.addMessage,

@@ -1,5 +1,15 @@
+import { getCurrentAuthUserThunkCreator } from './auth.reducer';
 import { actionsTypes } from './store';
-import { getCurrentAuthUserThunkCreator } from './users-reducer';
+
+export const initializedSuccessActionCreator = () => ({
+  type: actionsTypes.setInitialized,
+});
+
+export const initializeAppThunkCreator = () => (dispatch) => {
+  dispatch(getCurrentAuthUserThunkCreator()).then(() => {
+      dispatch(initializedSuccessActionCreator());
+  });
+};
 
 const initialState = {
     initialized: false,
@@ -13,14 +23,4 @@ export const appReducer = (state = initialState, action) => {
         default:
             return state;
     }
-};
-
-export const initializedSuccessActionCreator = () => ({
-  type: actionsTypes.setInitialized,
-});
-
-export const initializeAppThunkCreator = () => (dispatch) => {
-  dispatch(getCurrentAuthUserThunkCreator()).then(() => {
-    dispatch(initializedSuccessActionCreator())
-  })
 };
