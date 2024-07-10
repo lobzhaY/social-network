@@ -40,7 +40,9 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
     };
 };
 
-export const AuthRedirectDialogsComponent = compose(
+const AuthRedirectDialogsComponent = compose(
     withAuthRedirect,
     connect(mapStateToProps, mapDispatchToProps)
 )(Dialogs);
+
+export default AuthRedirectDialogsComponent;

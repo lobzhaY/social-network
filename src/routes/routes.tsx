@@ -2,9 +2,12 @@ import { createBrowserRouter } from 'react-router-dom';
 import { Music, News, Settings, UsersContainer } from '../components';
 import App from '../App';
 import { ROUTER_PATH } from './router-constants';
-import { AuthRedirectDialogsComponent } from '../components/Dialogs/DialogsContainer';
-import { AuthRedirectProfileComponent } from '../components/Profile/ProfileContainer';
 import { Login } from '../components/Login';
+import React, { Suspense } from 'react';
+import { Loader } from '../components/commen';
+
+const DialogsComponent = React.lazy(() => import('../components/Dialogs/DialogsContainer'));
+const ProfileComponent = React.lazy(() => import('../components/Profile/ProfileContainer'));
 
 export const router = createBrowserRouter([
     {
@@ -13,12 +16,18 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: `${ROUTER_PATH.profile}/:id?`,
-                element:<AuthRedirectProfileComponent />,
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <ProfileComponent />
+                    </Suspense>
+                ),
             },
             {
                 path: ROUTER_PATH.dialogs,
                 element: (
-                    <AuthRedirectDialogsComponent />
+                    <Suspense fallback={<Loader />}>
+                        <DialogsComponent />
+                    </Suspense>
                 ),
                 children: [
                     {
@@ -41,12 +50,12 @@ export const router = createBrowserRouter([
             },
             {
                 path: ROUTER_PATH.users,
-                element: <UsersContainer />
+                element: <UsersContainer />,
             },
             {
                 path: ROUTER_PATH.login,
-                element: <Login />
-            }
+                element: <Login />,
+            },
         ],
     },
 ]);

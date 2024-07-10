@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import styles from './pagination.module.scss';
+import { UserType } from '../../Users/UsersType';
 
 
 export type PaginationTypeProps = {
+    dependency: UserType[];
     pageSize: number;
     currentPage: number;
     totalItemsCount: number;
@@ -16,14 +18,15 @@ export const Pagination: React.FC<PaginationTypeProps> = ({
     totalItemsCount,
     pageSize,
     currentPage,
-    positionSize = 20
+    positionSize = 20,
+    dependency
 }) => {
     const [pages, setPages] = useState<number[]>([]);
     const [positionNumber, setPositionNumber] = useState(1);
 
     useEffect(() => {
         pagesOfCount();
-    }, []);
+    }, [dependency]);
 
     const pagesOfCount = () => {
         const pagesCount = Math.ceil(totalItemsCount / pageSize);

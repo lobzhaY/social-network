@@ -75,4 +75,6 @@ export const ProfileContainer = () => {
     );
 };
 
-export const AuthRedirectProfileComponent: React.FC = withAuthRedirect(ProfileContainer)
+const AuthRedirectProfileComponent: React.FC = withAuthRedirect(ProfileContainer);
+
+export default AuthRedirectProfileComponent;
