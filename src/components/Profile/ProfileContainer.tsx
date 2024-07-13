@@ -4,7 +4,7 @@ import { ProfileType } from './ProfileType';
 import { useNavigate, useParams } from 'react-router-dom';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getProfileUserThunkCreator, getStatusUserThunkCreator, updateStatusUserThunkCreator } from '../../redux/profile-reducer';
+import { getProfileUserThunkCreator, getStatusUserThunkCreator, savePhotoUserThunkCreator, updateStatusUserThunkCreator } from '../../redux/profile-reducer';
 
 type ProfileAPIType = {
     status: string;
@@ -16,10 +16,11 @@ type ProfileAPIType = {
     getUserStatus: (id: string) => void;
     setUserStatus: (id: string) => void;
     navigate: any;
+    savePhoto: (photo: object) => void;
 };
 
 class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
-    componentDidMount(): void {
+    updateProfile() {
         let userId = this.props.userId;
         
         if (!this.props.userId) {
@@ -33,9 +34,18 @@ class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
         this.props.setUserProfile(userId as string);
         this.props.getUserStatus(userId as string);
     }
+    componentDidMount(): void {
+       this.updateProfile()
+    }
+
+    componentDidUpdate(prevProps: Readonly<ProfileAPIType>, prevState: Readonly<{}>, snapshot?: any): void {
+        if (prevProps.userId !== this.props.userId) {
+          this.updateProfile()
+        }
+    }
 
     render() {
-        return <Profile userProfile={this.props.userProfile} status={this.props.status} setUserStatus={this.props.setUserStatus} />;
+        return <Profile savePhoto={this.props.savePhoto} isOwner={!this.props.userId} userProfile={this.props.userProfile} status={this.props.status} setUserStatus={this.props.setUserStatus} />;
     }
 }
 
@@ -60,6 +70,10 @@ export const ProfileContainer = () => {
         dispatch(updateStatusUserThunkCreator(status))
     }
 
+    const savePhoto = (photo: object) => {
+        dispatch(savePhotoUserThunkCreator(photo));
+    }
+
     return (
         <ProfileAPIContainer
             setUserStatus={setUserStatus}
@@ -71,6 +85,7 @@ export const ProfileContainer = () => {
             status={status}
             isAuth={isAuth}
             navigate={navigate}
+            savePhoto={savePhoto}
         />
     );
 };

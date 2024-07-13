@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
 type ProfileStatusPropsType = {
+    isOwner: boolean;
     status: string;
     setUserStatus: (status: string) => void;
 };
 
-export const ProfileStatus: React.FC<ProfileStatusPropsType> = ({status, setUserStatus}) => {
+export const ProfileStatus: React.FC<ProfileStatusPropsType> = ({
+    isOwner,
+    status,
+    setUserStatus,
+}) => {
     const [editMode, setEditMode] = useState(false);
     const [statusState, setStatusState] = useState(status);
 
@@ -28,23 +33,23 @@ export const ProfileStatus: React.FC<ProfileStatusPropsType> = ({status, setUser
 
     return (
         <div>
-                {!editMode ? (
-                    <div>
-                        <span onDoubleClick={() => handleActivateEditMode()}>
-                            {status || '-----'}
-                        </span>
-                    </div>
-                ) : (
-                    <div>
-                        <input
-                            autoFocus
-                            type='text'
-                            value={statusState}
-                            onChange={handleChangeStatus}
-                            onBlur={() => handleDeactivateEditMode()}
-                        />
-                    </div>
-                )}
-            </div>
-    )
-}
+            {!isOwner ? (
+                <span>{status || '***'}</span>
+            ) : !editMode ? (
+                <div>
+                    <span onDoubleClick={() => handleActivateEditMode()}>{status || '-----'}</span>
+                </div>
+            ) : (
+                <div>
+                    <input
+                        autoFocus
+                        type='text'
+                        value={statusState}
+                        onChange={handleChangeStatus}
+                        onBlur={() => handleDeactivateEditMode()}
+                    />
+                </div>
+            )}
+        </div>
+    );
+};

@@ -4,15 +4,17 @@ import { ProfileType } from './ProfileType';
 import { Loader } from '../commen';
 
 type ProfileComponentType = {
+    isOwner: boolean;
     status: string;
     userProfile: ProfileType | null;
     setUserStatus: (status: string) => void;
+    savePhoto: (photo: object) => void;
 };
 
-export const Profile: React.FC<ProfileComponentType> = ({userProfile, status, setUserStatus}) => {
+export const Profile: React.FC<ProfileComponentType> = ({savePhoto, isOwner, userProfile, status, setUserStatus}) => {
     return (
         !userProfile ? (<Loader />) : (<div>
-            <ProfileInfo userProfile={userProfile} status={status} setUserStatus={setUserStatus} />
+            <ProfileInfo savePhoto={savePhoto} isOwner={isOwner} userProfile={userProfile} status={status} setUserStatus={setUserStatus} />
             <MyPostsContainer />
         </div>)
     );

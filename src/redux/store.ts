@@ -15,5 +15,6 @@ export const actionsTypes = {
     getUserStatus: '/profile/GET_USER_STATUS',
     updateUserStatus: '/profile/UPDATE_USER_STATUS',
     setInitialized: '/app/SET_INITIALIZED',
-    deletePost: '/profile/DELETE_POST'
+    deletePost: '/profile/DELETE_POST',
+    saveUserPhoto: '/profile/SAVE_USER_PHOTO_SUCCESS'
 };

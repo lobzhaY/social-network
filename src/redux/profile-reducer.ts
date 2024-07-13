@@ -1,4 +1,9 @@
-import { getProfileUserAPI, getUserStatusAPI, updateUserStatusAPI } from '../api/api';
+import {
+    getProfileUserAPI,
+    getUserStatusAPI,
+    saveUserPhoto,
+    updateUserStatusAPI,
+} from '../api/api';
 import { PostType } from '../components/Profile/MyPosts/MyPostsType';
 import { ProfileType } from '../components/Profile/ProfileType';
 import { actionsTypes } from './store';
@@ -21,6 +26,11 @@ export const getUserStatusActionCreator = (status: string) => ({
 export const deletePostActionCreator = (id: string) => ({
     type: actionsTypes.deletePost,
     payload: id,
+});
+
+export const saveUserPhotoSuccessActionCreator = (photos: { small: string; large: string }) => ({
+    type: actionsTypes.saveUserPhoto,
+    payload: photos,
 });
 
 export const postsData: PostType[] = [
@@ -52,6 +62,17 @@ export const updateStatusUserThunkCreator = (status: string) => async (dispatch)
         const { resultCode } = await updateUserStatusAPI(status);
         if (!resultCode) {
             dispatch(getUserStatusActionCreator(status));
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const savePhotoUserThunkCreator = (photo: object) => async (dispatch) => {
+    try {
+        const { resultCode, data } = await saveUserPhoto(photo);
+        if (!resultCode) {
+            dispatch(saveUserPhotoSuccessActionCreator(data.photos));
         }
     } catch (error) {
         console.log(error);
@@ -97,6 +118,15 @@ export const profileReducer = (state = initialState, action) => {
             return {
                 ...state,
                 posts,
+            };
+
+        case actionsTypes.saveUserPhoto:
+            return {
+                ...state,
+                userProfile: {
+                    ...(state.userProfile as unknown as ProfileType),
+                    photos: {...action.payload},
+                },
             };
 
         default:
