@@ -17,4 +17,5 @@ export type ProfileType = {
         small: string;
         large: string;
     };
+    aboutMe?: string;
 };
