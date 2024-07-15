@@ -29,7 +29,7 @@ export const getCurrentAuthUserThunkCreator = () => async (dispatch) => {
 };
 
 export const loginThunkCreator =
-    (email: string, password: string, rememberMe: boolean, setStatus) => async (dispatch) => {
+    (email: string, password: string, rememberMe: boolean, setStatus: any) => async (dispatch) => {
         try {
             const { resultCode, messages } = await loginAPI(email, password, rememberMe);
 

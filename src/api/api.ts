@@ -54,3 +54,7 @@ export const saveUserPhoto = (photo: object) => {
         .put('profile/photo', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
         .then((response) => response.data);
 };
+
+export const saveUserProfile = (profile: any) => {
+    return instance.put('/profile', profile).then((response) => response.data);
+}

@@ -12,6 +12,7 @@ type ProfileInfoType = {
     userProfile: ProfileType;
     setUserStatus: (status: string) => void;
     savePhoto: (photo: object) => void;
+    saveDataProfileForm: (dataForm: any, setStatus: any) => void;
 };
 
 export const ProfileInfo: React.FC<ProfileInfoType> = ({
@@ -20,6 +21,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
     userProfile,
     status,
     setUserStatus,
+    saveDataProfileForm
 }) => {
     const mainImgSelected = (e) => {
         if (e.target.files.length) {
@@ -46,7 +48,7 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
                 </div>
 
                 {
-                    isOwner && editMode ? <ProfileForm userProfile={userProfile} toEditMode={setEditMode} /> : <ProfileData userProfile={userProfile} isOwner={isOwner} toEditMode={setEditMode}  />
+                    isOwner && editMode ? <ProfileForm saveDataProfileForm={saveDataProfileForm} userProfile={userProfile} toEditMode={setEditMode} /> : <ProfileData userProfile={userProfile} isOwner={isOwner} toEditMode={setEditMode}  />
                 }
                
 

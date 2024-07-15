@@ -4,7 +4,7 @@ import { ProfileType } from './ProfileType';
 import { useNavigate, useParams } from 'react-router-dom';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getProfileUserThunkCreator, getStatusUserThunkCreator, savePhotoUserThunkCreator, updateStatusUserThunkCreator } from '../../redux/profile-reducer';
+import { getProfileUserThunkCreator, getStatusUserThunkCreator, savePhotoUserThunkCreator, saveProfileUserThunkCreator, updateStatusUserThunkCreator } from '../../redux/profile-reducer';
 
 type ProfileAPIType = {
     status: string;
@@ -17,6 +17,7 @@ type ProfileAPIType = {
     setUserStatus: (id: string) => void;
     navigate: any;
     savePhoto: (photo: object) => void;
+    saveDataProfileForm: (dataForm: any, setStatus: any) => void;
 };
 
 class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
@@ -45,7 +46,7 @@ class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
     }
 
     render() {
-        return <Profile savePhoto={this.props.savePhoto} isOwner={!this.props.userId} userProfile={this.props.userProfile} status={this.props.status} setUserStatus={this.props.setUserStatus} />;
+        return <Profile saveDataProfileForm={this.props.saveDataProfileForm} savePhoto={this.props.savePhoto} isOwner={!this.props.userId} userProfile={this.props.userProfile} status={this.props.status} setUserStatus={this.props.setUserStatus} />;
     }
 }
 
@@ -68,11 +69,15 @@ export const ProfileContainer = () => {
 
     const setUserStatus = (status: string) => {
         dispatch(updateStatusUserThunkCreator(status))
-    }
+    };
 
     const savePhoto = (photo: object) => {
         dispatch(savePhotoUserThunkCreator(photo));
-    }
+    };
+
+    const saveDataProfileForm = (dataForm: any, setStatus: any) => {
+        dispatch(saveProfileUserThunkCreator(dataForm, setStatus));
+    };
 
     return (
         <ProfileAPIContainer
@@ -86,6 +91,7 @@ export const ProfileContainer = () => {
             isAuth={isAuth}
             navigate={navigate}
             savePhoto={savePhoto}
+            saveDataProfileForm={saveDataProfileForm}
         />
     );
 };

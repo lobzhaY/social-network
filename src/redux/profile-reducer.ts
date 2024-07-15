@@ -2,6 +2,7 @@ import {
     getProfileUserAPI,
     getUserStatusAPI,
     saveUserPhoto,
+    saveUserProfile,
     updateUserStatusAPI,
 } from '../api/api';
 import { PostType } from '../components/Profile/MyPosts/MyPostsType';
@@ -78,6 +79,22 @@ export const savePhotoUserThunkCreator = (photo: object) => async (dispatch) => 
         console.log(error);
     }
 };
+
+export const saveProfileUserThunkCreator = (profile: any, setStatus: any) => async (dispatch, getState) => {
+    const userId = getState().auth.userId;
+
+    try {
+        const { resultCode, messages } = await saveUserProfile(profile);
+        if (resultCode === 0) {
+           dispatch(getProfileUserThunkCreator(userId));
+        } else {
+            setStatus({ error: messages });
+
+        }      
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 const initialState = {
     posts: postsData,
