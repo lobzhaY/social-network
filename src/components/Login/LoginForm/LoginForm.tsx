@@ -5,21 +5,23 @@ import { validateLoginForm, validationSchemaLoginForm } from '../../../utils/val
 import styles from './LoginForm.module.scss';
 
 type LoginFormProps = {
-    loginUser: (email: string, password: string, rememberMe: boolean, setStatus: any) => void;
+    captchaUrl: string | null;
+    loginUser: (email: string, password: string, rememberMe: boolean, captcha: string, setStatus: any) => void;
 };
 
-export const LoginForm: React.FC<LoginFormProps> = ({ loginUser }) => {
+export const LoginForm: React.FC<LoginFormProps> = ({ captchaUrl, loginUser }) => {
     return (
         <Formik
             initialValues={{
                 email: '',
                 password: '',
                 rememberMe: false,
+                captcha: '',
             }}
             validate={validateLoginForm}
             validationSchema={validationSchemaLoginForm}
             onSubmit={(values, submitProps) => {
-                loginUser(values.email, values.password, values.rememberMe, submitProps.setStatus);
+                loginUser(values.email, values.password, values.rememberMe, values.captcha, submitProps.setStatus);
                 submitProps.resetForm();
             }}
         >
@@ -52,6 +54,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({ loginUser }) => {
                         <Field type={'checkbox'} name={'rememberMe'} id='rememberMe' />
                         <label htmlFor={'rememberMe'}> remember me </label>
                     </div>
+
+                    {
+                        captchaUrl && <img src={captchaUrl} />
+                    }
+                    {
+                        captchaUrl && (
+                            <div>
+                                <Field name={'captcha'} type={'text'} placeholder={'Symbols from image'} />
+                            </div>
+                        )
+                    }
 
                     {status &&
                         status.error.length > 0 &&

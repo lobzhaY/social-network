@@ -37,9 +37,9 @@ export const updateUserStatusAPI = (status: string) => {
     return instance.put(`profile/status`, { status }).then((response) => response.data);
 };
 
-export const loginAPI = (email: string, password: string, rememberMe: boolean = false) => {
+export const loginAPI = (email: string, password: string, rememberMe: boolean = false, captcha: string,) => {
     return instance
-        .post('auth/login', { email, password, rememberMe })
+        .post('auth/login', { email, password, rememberMe, captcha })
         .then((response) => response.data);
 };
 
@@ -57,4 +57,8 @@ export const saveUserPhoto = (photo: object) => {
 
 export const saveUserProfile = (profile: any) => {
     return instance.put('/profile', profile).then((response) => response.data);
-}
+};
+
+export const getCaptchaUrl = () => {
+    return instance.get('/security/get-captcha-url').then((response) => response.data);
+};

@@ -8,10 +8,10 @@ export const Login: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const { isAuth } = useAppSelector((state) => state.auth);
+    const { isAuth, captchaUrl } = useAppSelector((state) => state.auth);
 
-    const loginUser = (email: string, password: string, rememberMe: boolean, setStatus: any) => {
-        dispatch(loginThunkCreator(email, password, rememberMe, setStatus));
+    const loginUser = (email: string, password: string, rememberMe: boolean, captcha: string, setStatus: any) => {
+        dispatch(loginThunkCreator(email, password, rememberMe, captcha, setStatus));
     };
 
     if (isAuth) {
@@ -21,7 +21,7 @@ export const Login: React.FC = () => {
     return (
         <>
             <h1>LOGIN</h1>
-            <LoginForm loginUser={loginUser} />
+            <LoginForm loginUser={loginUser} captchaUrl={captchaUrl} />
         </>
     );
 };

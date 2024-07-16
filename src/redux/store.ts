@@ -16,5 +16,6 @@ export const actionsTypes = {
     updateUserStatus: '/profile/UPDATE_USER_STATUS',
     setInitialized: '/app/SET_INITIALIZED',
     deletePost: '/profile/DELETE_POST',
-    saveUserPhoto: '/profile/SAVE_USER_PHOTO_SUCCESS'
+    saveUserPhoto: '/profile/SAVE_USER_PHOTO_SUCCESS',
+    getCaptchaUrl: '/auth/GET_CAPTCHA_URL'
 };
