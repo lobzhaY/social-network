@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { Outlet } from 'react-router-dom';
+
 import { initializeAppThunkCreator } from './redux/app.reducer';
 import { useAppDispatch, useAppSelector } from './hooks';
 
