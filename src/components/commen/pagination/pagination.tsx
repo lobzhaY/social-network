@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import styles from './pagination.module.scss';
 import { UserType } from '../../Users/UsersType';
 
+import classNames from 'classnames';
+import styles from './pagination.module.scss';
 
 export type PaginationTypeProps = {
     dependency: UserType[];
@@ -53,7 +54,7 @@ export const Pagination: React.FC<PaginationTypeProps> = ({
             {pages!.filter((p) => p >= leftPositionPageNumber && p <= rightPositionPageNumber).map((pageItem) => (
                 <span
                     key={pageItem}
-                    className={currentPage === pageItem ? styles.selectedPage : styles.pageItem}
+                    className={classNames({[styles.selectedPage]: currentPage === pageItem}, styles.pageItem)}
                     onClick={() => handleChangeCurrentPage(pageItem)}
                 >
                     {pageItem}

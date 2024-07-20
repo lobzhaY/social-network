@@ -13,6 +13,7 @@ export const initializeAppThunkCreator = () => (dispatch) => {
 
 const initialState = {
     initialized: false,
+    globalError: false,
 };
 
 export const appReducer = (state = initialState, action) => {

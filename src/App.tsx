@@ -16,8 +16,20 @@ function App() {
     const { initialized } = useAppSelector((state) => state.app);
     const { friends } = useAppSelector((state) => state.sidebar);
 
+    const handleCatchErrors = (promiseRejectionEvent) => {
+        console.log(promiseRejectionEvent);
+    };
+
     useEffect(() => {
         dispatch(initializeAppThunkCreator());
+    }, []);
+
+    useEffect(() => {
+        window.addEventListener('unhandledrejection', handleCatchErrors);
+       
+        return () => {
+            window.removeEventListener('unhandledrejection', handleCatchErrors);
+        }
     }, []);
 
     return (
