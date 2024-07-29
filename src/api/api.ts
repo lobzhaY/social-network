@@ -37,7 +37,7 @@ export const updateUserStatusAPI = (status: string) => {
     return instance.put(`profile/status`, { status }).then((response) => response.data);
 };
 
-export const loginAPI = (email: string, password: string, rememberMe: boolean = false, captcha: string,) => {
+export const loginAPI = (email: string, password: string, rememberMe: boolean = false, captcha: string) => {
     return instance
         .post('auth/login', { email, password, rememberMe, captcha })
         .then((response) => response.data);

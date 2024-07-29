@@ -1,12 +1,25 @@
 import { getCaptchaUrl, getCurrentAuthUserAPI, loginAPI, logoutAPI } from '../api/api';
+import { AppDispatch } from './redux-store';
 import { actionsTypes } from './store';
+
+type UserDataType = {
+    userId: number | null;
+        userEmail: string | null;
+        userLogin: string | null;
+        isAuth: boolean;
+}
+
+type SetUserDataType = {
+    type: typeof actionsTypes.setUserData;
+    payload: UserDataType;
+};
 
 export const setUserDataActionCreator = (
     userId: number | null,
     userEmail: string | null,
     userLogin: string | null,
     isAuth: boolean,
-) => ({
+): SetUserDataType => ({
     type: actionsTypes.setUserData,
     payload: {
         userId,
@@ -16,12 +29,17 @@ export const setUserDataActionCreator = (
     },
 });
 
-export const getCaptchaActionCreator = (url: string) => ({
+type GetCaptchaUrlType = {
+    type: typeof actionsTypes.getCaptchaUrl;
+    payload: string;
+};
+
+export const getCaptchaActionCreator = (url: string): GetCaptchaUrlType => ({
     type: actionsTypes.getCaptchaUrl,
     payload: url,
 });
 
-export const getCurrentAuthUserThunkCreator = () => async (dispatch) => {
+export const getCurrentAuthUserThunkCreator = () => async (dispatch: AppDispatch) => {
     try {
         const { resultCode, data } = await getCurrentAuthUserAPI();
         if (resultCode === 0) {
@@ -34,14 +52,15 @@ export const getCurrentAuthUserThunkCreator = () => async (dispatch) => {
 };
 
 export const loginThunkCreator =
-    (email: string, password: string, rememberMe: boolean, captcha: boolean, setStatus: any) => async (dispatch) => {
+    (email: string, password: string, rememberMe: boolean, captcha: string, setStatus: any) =>
+    async (dispatch: AppDispatch) => {
         try {
             const { resultCode, messages } = await loginAPI(email, password, rememberMe, captcha);
 
             if (resultCode === 0) {
                 dispatch(getCurrentAuthUserThunkCreator());
             } else {
-               if (resultCode === 10) {
+                if (resultCode === 10) {
                     dispatch(getCaptchaUrlThunkCreator());
                 }
                 setStatus({ error: messages });
@@ -51,7 +70,7 @@ export const loginThunkCreator =
         }
     };
 
-export const logoutThunkCreator = () => async (dispatch) => {
+export const logoutThunkCreator = () => async (dispatch: AppDispatch) => {
     try {
         const { resultCode } = await logoutAPI();
         if (resultCode === 0) {
@@ -62,7 +81,7 @@ export const logoutThunkCreator = () => async (dispatch) => {
     }
 };
 
-export const getCaptchaUrlThunkCreator = () => async (dispatch) => {
+export const getCaptchaUrlThunkCreator = () => async (dispatch: AppDispatch) => {
     try {
         const { url } = await getCaptchaUrl();
         getCaptchaActionCreator(url);
@@ -71,9 +90,16 @@ export const getCaptchaUrlThunkCreator = () => async (dispatch) => {
     }
 };
 
+type InitialStateType = {
+    userId: number | null;
+    userEmail: string | null;
+    userLogin: string | null;
+    isFetching: boolean;
+    isAuth: boolean;
+    captchaUrl: string | null;
+};
 
-
-const initialState = {
+const initialState: InitialStateType = {
     userId: null,
     userEmail: null,
     userLogin: null,
@@ -82,19 +108,22 @@ const initialState = {
     captchaUrl: null,
 };
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (
+    state = initialState,
+    action: SetUserDataType | GetCaptchaUrlType,
+): InitialStateType => {
     switch (action.type) {
         case actionsTypes.setUserData:
             return {
                 ...state,
-                ...action.payload,
+                ...(action as SetUserDataType).payload,
             };
-        
-        case actionsTypes.getCaptchaUrl: 
+
+        case actionsTypes.getCaptchaUrl:
             return {
                 ...state,
-                captchaUrl: action.payload,
-            }
+                captchaUrl: (action as GetCaptchaUrlType).payload,
+            };
 
         default:
             return state;

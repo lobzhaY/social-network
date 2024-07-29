@@ -7,29 +7,56 @@ import {
 } from '../api/api';
 import { PostType } from '../components/Profile/MyPosts/MyPostsType';
 import { ProfileType } from '../components/Profile/ProfileType';
+import { AppDispatch } from './redux-store';
 import { actionsTypes } from './store';
 
-export const addPostActionCreator = (text: string) => ({
+type AddPostType = {
+    type: typeof actionsTypes.addPost;
+    payload: string;
+};
+
+export const addPostActionCreator = (text: string): AddPostType => ({
     type: actionsTypes.addPost,
     payload: text,
 });
 
-export const setUserProfileActionCreator = (profile: ProfileType) => ({
+type SetUserProfileType = {
+    type: typeof actionsTypes.setUserProfile;
+    payload: ProfileType;
+};
+
+export const setUserProfileActionCreator = (profile: ProfileType): SetUserProfileType => ({
     type: actionsTypes.setUserProfile,
     payload: profile,
 });
 
-export const getUserStatusActionCreator = (status: string) => ({
+type GetUserStatusType = {
+    type: typeof actionsTypes.getUserStatus;
+    payload: string;
+};
+export const getUserStatusActionCreator = (status: string): GetUserStatusType => ({
     type: actionsTypes.getUserStatus,
     payload: status,
 });
 
-export const deletePostActionCreator = (id: string) => ({
+type DeletePostType = {
+    type: typeof actionsTypes.deletePost;
+    payload: string;
+};
+export const deletePostActionCreator = (id: string): DeletePostType => ({
     type: actionsTypes.deletePost,
     payload: id,
 });
 
-export const saveUserPhotoSuccessActionCreator = (photos: { small: string; large: string }) => ({
+type PhotosType = { small: string; large: string };
+type SaveUserPhotoSuccessType = {
+    type: typeof actionsTypes.saveUserPhoto;
+    payload: PhotosType;
+};
+
+export const saveUserPhotoSuccessActionCreator = (
+    photos: PhotosType,
+): SaveUserPhotoSuccessType => ({
     type: actionsTypes.saveUserPhoto,
     payload: photos,
 });
@@ -40,7 +67,7 @@ export const postsData: PostType[] = [
     { id: '5', message: 'Всё будет хорошо!', likeCount: 25 },
 ];
 
-export const getProfileUserThunkCreator = (id: string) => async (dispatch) => {
+export const getProfileUserThunkCreator = (id: string) => async (dispatch: AppDispatch) => {
     try {
         const data = await getProfileUserAPI(id);
         dispatch(setUserProfileActionCreator(data));
@@ -49,7 +76,7 @@ export const getProfileUserThunkCreator = (id: string) => async (dispatch) => {
     }
 };
 
-export const getStatusUserThunkCreator = (id: string) => async (dispatch) => {
+export const getStatusUserThunkCreator = (id: string) => async (dispatch: AppDispatch) => {
     try {
         const { data } = await getUserStatusAPI(id);
         dispatch(getUserStatusActionCreator(data));
@@ -58,7 +85,7 @@ export const getStatusUserThunkCreator = (id: string) => async (dispatch) => {
     }
 };
 
-export const updateStatusUserThunkCreator = (status: string) => async (dispatch) => {
+export const updateStatusUserThunkCreator = (status: string) => async (dispatch: AppDispatch) => {
     try {
         const { resultCode } = await updateUserStatusAPI(status);
         if (!resultCode) {
@@ -69,7 +96,7 @@ export const updateStatusUserThunkCreator = (status: string) => async (dispatch)
     }
 };
 
-export const savePhotoUserThunkCreator = (photo: object) => async (dispatch) => {
+export const savePhotoUserThunkCreator = (photo: object) => async (dispatch: AppDispatch) => {
     try {
         const { resultCode, data } = await saveUserPhoto(photo);
         if (!resultCode) {
@@ -80,21 +107,29 @@ export const savePhotoUserThunkCreator = (photo: object) => async (dispatch) => 
     }
 };
 
-export const saveProfileUserThunkCreator = (profile: any, setStatus: any) => async (dispatch, getState) => {
-    const userId = getState().auth.userId;
+export const saveProfileUserThunkCreator =
+    (profile: any, setStatus: any) =>
+    async (dispatch: AppDispatch, getState: () => { auth: { userId: any } }) => {
+        const userId = getState().auth.userId;
 
-    try {
-        const { resultCode, messages } = await saveUserProfile(profile);
-        if (resultCode === 0) {
-           dispatch(getProfileUserThunkCreator(userId));
-        } else {
-            setStatus({ error: messages });
+        try {
+            const { resultCode, messages } = await saveUserProfile(profile);
+            if (resultCode === 0) {
+                dispatch(getProfileUserThunkCreator(userId));
+            } else {
+                setStatus({ error: messages });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-        }      
-    } catch (error) {
-        console.log(error);
-    }
-}
+type InitialStateType = {
+    posts: PostType[];
+    newPostText: string;
+    userProfile: null | ProfileType;
+    status: string;
+};
 
 const initialState = {
     posts: postsData,
@@ -103,12 +138,12 @@ const initialState = {
     status: '',
 };
 
-export const profileReducer = (state = initialState, action) => {
+export const profileReducer = (state = initialState, action: AddPostType | SetUserProfileType | GetUserStatusType | SaveUserPhotoSuccessType): InitialStateType => {
     switch (action.type) {
         case actionsTypes.addPost:
             const newPost: PostType = {
                 id: '5',
-                message: action.payload,
+                message: (action as AddPostType).payload,
                 likeCount: 0,
             };
 
@@ -121,13 +156,13 @@ export const profileReducer = (state = initialState, action) => {
         case actionsTypes.setUserProfile:
             return {
                 ...state,
-                userProfile: action.payload as ProfileType,
+                userProfile: (action as SetUserProfileType).payload,
             };
 
         case actionsTypes.getUserStatus:
             return {
                 ...state,
-                status: action.payload,
+                status: (action as GetUserStatusType).payload,
             };
 
         case actionsTypes.deletePost:
@@ -142,7 +177,7 @@ export const profileReducer = (state = initialState, action) => {
                 ...state,
                 userProfile: {
                     ...(state.userProfile as unknown as ProfileType),
-                    photos: {...action.payload},
+                    photos: { ...(action as SaveUserPhotoSuccessType).payload },
                 },
             };
 

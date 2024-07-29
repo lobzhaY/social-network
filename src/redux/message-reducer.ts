@@ -1,9 +1,13 @@
-
 import { DialogsType, MessagesType } from '../components/Dialogs/dataType';
 import { RootState } from './redux-store';
 import { actionsTypes } from './store';
 
-export const addMessageActionCreator = (text: string) => ({
+type AddMassageType = {
+    type: typeof actionsTypes.addMessage,
+    payload: string
+}
+
+export const addMessageActionCreator = (text: string): AddMassageType => ({
     type: actionsTypes.addMessage,
     payload: text
 });
@@ -24,20 +28,25 @@ export const messagesData: MessagesType[] = [
     { id: '5', message: 'Привет!' },
 ];
 
-const initialState = {
+type InitialStateType = {
+    dialogs: DialogsType[],
+    messages: MessagesType[],
+};
+
+const initialState: InitialStateType = {
     dialogs: dialogsData,
     messages: messagesData,
 };
 
-export const getDialogsSelector = (state: RootState) => {
+export const getDialogsSelector = (state: RootState): DialogsType[] => {
     return state.messagePage.dialogs
 };
 
-export const getMessagesSelector = (state: RootState) => {
+export const getMessagesSelector = (state: RootState): MessagesType[] => {
     return  state.messagePage.messages
 };
 
-export const messageReducer = (state = initialState, action) => {
+export const messageReducer = (state = initialState, action: AddMassageType): InitialStateType => {
     switch (action.type) {
         case actionsTypes.addMessage:
             const newMessage: { id: string; message: string } = {
