@@ -1,42 +1,81 @@
 import { followUserAPI, getUsersAPI, unfollowUserAPI } from '../api/api';
 import { UserType } from '../components/Users/UsersType';
 import { updateObjectInArray } from '../utils/objects-helpers';
+import { AppDispatch } from './redux-store';
 import { actionsTypes } from './store';
 
-export const followActionCreator = (userId: number) => ({
+type FollowType = {
+    type: typeof actionsTypes.followUser,
+    payload: number,
+};
+
+export const followActionCreator = (userId: number): FollowType => ({
     type: actionsTypes.followUser,
     payload: userId,
 });
 
-export const unfollowActionCreator = (userId: number) => ({
+type UnFollowType = {
+    type: typeof actionsTypes.unfollowUser,
+    payload: number,
+};
+
+export const unfollowActionCreator = (userId: number): UnFollowType => ({
     type: actionsTypes.unfollowUser,
     payload: userId,
 });
 
-export const setUsersActionCreator = (users: UserType[]) => ({
+type SetUserType = {
+    type: typeof actionsTypes.setUsers,
+    payload: UserType[],
+};
+
+export const setUsersActionCreator = (users: UserType[]): SetUserType => ({
     type: actionsTypes.setUsers,
     payload: users,
 });
 
-export const setCurrentPageActionCreator = (currentPage: number) => ({
+type SetCurrentPageType = {
+    type: typeof actionsTypes.setCurrentPage,
+    payload: number,
+}
+
+export const setCurrentPageActionCreator = (currentPage: number): SetCurrentPageType => ({
     type: actionsTypes.setCurrentPage,
     payload: currentPage,
 });
 
-export const setTotalUsersCountActionCreator = (totalUsers: number) => ({
+type SetTotalUsersCountType = {
+    type: typeof actionsTypes.setTotalUsersCount,
+    payload: number,
+}
+
+export const setTotalUsersCountActionCreator = (totalUsers: number): SetTotalUsersCountType => ({
     type: actionsTypes.setTotalUsersCount,
     payload: totalUsers,
 });
 
-export const toggleIsFetchingActionCreator = (isFetching: boolean) => ({
+type ToggleIsFetchingType = {
+    type: typeof actionsTypes.toggleIsFetching,
+    payload: boolean,
+}
+
+export const toggleIsFetchingActionCreator = (isFetching: boolean): ToggleIsFetchingType => ({
     type: actionsTypes.toggleIsFetching,
     payload: isFetching,
 });
 
+type ToggleIsProgressRequestType = {
+    type: typeof actionsTypes.toggleIsProgressRequest,
+    payload: {
+        isFetching: boolean,
+        isProgressId: number,
+    },
+}
+
 export const toggleIsProgressRequestActionCreator = (
     isFetching: boolean,
     isProgressId: number,
-) => ({
+): ToggleIsProgressRequestType => ({
     type: actionsTypes.toggleIsProgressRequest,
     payload: {
         isFetching,
@@ -44,7 +83,7 @@ export const toggleIsProgressRequestActionCreator = (
     },
 });
 
-export const getUsersThunkCreator = (pageItem: number, pageSize: number) => async (dispatch) => {
+export const getUsersThunkCreator = (pageItem: number, pageSize: number) => async (dispatch: AppDispatch) => {
     dispatch(toggleIsFetchingActionCreator(true));
 
     try {
@@ -58,7 +97,7 @@ export const getUsersThunkCreator = (pageItem: number, pageSize: number) => asyn
     }
 };
 
-const followUnfollowFlow = async (dispatch, id: number, apiMethod, actionCreator) => {
+const followUnfollowFlow = async (dispatch: AppDispatch, id: number, apiMethod: (id: number) => Promise<any>, actionCreator: any) => {
     dispatch(toggleIsProgressRequestActionCreator(true, id));
     try {
         const { resultCode } = await apiMethod(id);
@@ -72,15 +111,24 @@ const followUnfollowFlow = async (dispatch, id: number, apiMethod, actionCreator
     }
 };
 
-export const followUserThunkCreator = (id: number) => async (dispatch) => {
+export const followUserThunkCreator = (id: number) => async (dispatch: AppDispatch) => {
     followUnfollowFlow(dispatch, id, followUserAPI, followActionCreator);
 };
 
-export const unfollowUserThunkCreator = (id: number) => async (dispatch) => {
+export const unfollowUserThunkCreator = (id: number) => async (dispatch: AppDispatch) => {
     followUnfollowFlow(dispatch, id, unfollowUserAPI, unfollowActionCreator);
 };
 
-const initialState = {
+type InitialStateType = {
+    users: UserType[],
+    totalUsersCount: number,
+    pageSize: number,
+    currentPage: number,
+    isFetching: boolean,
+    isProgressRequest: number[],
+}
+
+const initialState: InitialStateType = {
     users: [],
     totalUsersCount: 0,
     pageSize: 20,
@@ -89,38 +137,38 @@ const initialState = {
     isProgressRequest: [],
 };
 
-export const usersReducer = (state = initialState, action) => {
+export const usersReducer = (state = initialState, action: FollowType | UnFollowType | SetUserType | SetCurrentPageType | SetTotalUsersCountType | ToggleIsFetchingType | ToggleIsProgressRequestType ): InitialStateType => {
     switch (action.type) {
         case actionsTypes.setUsers:
             return {
                 ...state,
-                users: [...action.payload],
+                users: [...(action as SetUserType).payload],
             };
 
         case actionsTypes.setCurrentPage:
             return {
                 ...state,
-                currentPage: action.payload,
+                currentPage: (action as SetCurrentPageType).payload,
             };
 
         case actionsTypes.setTotalUsersCount:
             return {
                 ...state,
-                totalUsersCount: action.payload,
+                totalUsersCount: (action as SetTotalUsersCountType).payload,
             };
 
         case actionsTypes.toggleIsFetching:
             return {
                 ...state,
-                isFetching: action.payload,
+                isFetching: (action as ToggleIsFetchingType).payload,
             };
 
         case actionsTypes.toggleIsProgressRequest:
             return {
                 ...state,
-                isProgressRequest: action.payload.isFetching
-                    ? [...state.isProgressRequest, action.payload.isProgressId]
-                    : state.isProgressRequest.filter((id) => id !== action.payload.isProgressId),
+                isProgressRequest: (action as ToggleIsProgressRequestType).payload.isFetching
+                    ? [...state.isProgressRequest, (action as ToggleIsProgressRequestType).payload.isProgressId]
+                    : state.isProgressRequest.filter((id) => id !== (action as ToggleIsProgressRequestType).payload.isProgressId),
             };
 
         case actionsTypes.followUser:

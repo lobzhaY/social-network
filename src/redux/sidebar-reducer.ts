@@ -18,10 +18,14 @@ export const friendsData: FriendType[] = [
     },
 ];
 
-const initialState = {
-    friends: friendsData,
+type InitialStateType = {
+    friends: FriendType[],
 }
 
-export const sidebarReducer = (state = initialState, action) => {
+const initialState: InitialStateType = {
+    friends: friendsData,
+};
+
+export const sidebarReducer = (state = initialState, action: unknown): InitialStateType => {
     return state;
 };

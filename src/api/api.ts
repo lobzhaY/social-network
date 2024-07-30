@@ -47,7 +47,7 @@ export const logoutAPI = () => {
     return instance.delete('auth/login').then((response) => response.data);
 };
 
-export const saveUserPhoto = (photo: object) => {
+export const saveUserPhoto = (photo: any) => {
     const formData = new FormData();
     formData.append('image', photo);
     return instance
