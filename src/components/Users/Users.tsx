@@ -1,8 +1,7 @@
 import { Pagination } from '../commen';
+import { User } from './user/user';
 
 import { UserType } from './UsersType';
-
-import { User } from './user/user';
 
 export type UsersType = {
     users: UserType[];

@@ -1,69 +1,71 @@
-import { followUserAPI, getUsersAPI, unfollowUserAPI } from '../api/api';
+import {  ResultCodes } from '../api/api';
+import { usersApi } from '../api/users-api';
 import { UserType } from '../components/Users/UsersType';
 import { updateObjectInArray } from '../utils/objects-helpers';
-import { AppDispatch } from './redux-store';
+import { ActionsTypeReturn, AppDispatch} from './redux-store';
 import { actionsTypes } from './store';
+
+export const actions = {
+   followActionCreator: (userId: number) => ({
+        type: actionsTypes.followUser,
+        payload: userId,
+    } as const),
+     unfollowActionCreator: (userId: number) => ({
+        type: actionsTypes.unfollowUser,
+        payload: userId,
+    }),
+    setUsersActionCreator: (users: UserType[]) => ({
+        type: actionsTypes.setUsers,
+        payload: users,
+    }),
+    setCurrentPageActionCreator: (currentPage: number) => ({
+        type: actionsTypes.setCurrentPage,
+        payload: currentPage,
+    }),
+    setTotalUsersCountActionCreator: (totalUsers: number) => ({
+        type: actionsTypes.setTotalUsersCount,
+        payload: totalUsers,
+    }),
+   toggleIsFetchingActionCreator: (isFetching: boolean) => ({
+        type: actionsTypes.toggleIsFetching,
+        payload: isFetching,
+    }),
+    toggleIsProgressRequestActionCreator: (
+        isFetching: boolean,
+        isProgressId: number,
+    ) => ({
+        type: actionsTypes.toggleIsProgressRequest,
+        payload: {
+            isFetching,
+            isProgressId,
+        },
+    }),
+}
 
 type FollowType = {
     type: typeof actionsTypes.followUser,
     payload: number,
 };
-
-export const followActionCreator = (userId: number): FollowType => ({
-    type: actionsTypes.followUser,
-    payload: userId,
-});
-
 type UnFollowType = {
     type: typeof actionsTypes.unfollowUser,
     payload: number,
 };
-
-export const unfollowActionCreator = (userId: number): UnFollowType => ({
-    type: actionsTypes.unfollowUser,
-    payload: userId,
-});
-
 type SetUserType = {
     type: typeof actionsTypes.setUsers,
     payload: UserType[],
 };
-
-export const setUsersActionCreator = (users: UserType[]): SetUserType => ({
-    type: actionsTypes.setUsers,
-    payload: users,
-});
-
 type SetCurrentPageType = {
     type: typeof actionsTypes.setCurrentPage,
     payload: number,
 }
-
-export const setCurrentPageActionCreator = (currentPage: number): SetCurrentPageType => ({
-    type: actionsTypes.setCurrentPage,
-    payload: currentPage,
-});
-
 type SetTotalUsersCountType = {
     type: typeof actionsTypes.setTotalUsersCount,
     payload: number,
 }
-
-export const setTotalUsersCountActionCreator = (totalUsers: number): SetTotalUsersCountType => ({
-    type: actionsTypes.setTotalUsersCount,
-    payload: totalUsers,
-});
-
 type ToggleIsFetchingType = {
     type: typeof actionsTypes.toggleIsFetching,
     payload: boolean,
 }
-
-export const toggleIsFetchingActionCreator = (isFetching: boolean): ToggleIsFetchingType => ({
-    type: actionsTypes.toggleIsFetching,
-    payload: isFetching,
-});
-
 type ToggleIsProgressRequestType = {
     type: typeof actionsTypes.toggleIsProgressRequest,
     payload: {
@@ -72,51 +74,40 @@ type ToggleIsProgressRequestType = {
     },
 }
 
-export const toggleIsProgressRequestActionCreator = (
-    isFetching: boolean,
-    isProgressId: number,
-): ToggleIsProgressRequestType => ({
-    type: actionsTypes.toggleIsProgressRequest,
-    payload: {
-        isFetching,
-        isProgressId,
-    },
-});
-
 export const getUsersThunkCreator = (pageItem: number, pageSize: number) => async (dispatch: AppDispatch) => {
-    dispatch(toggleIsFetchingActionCreator(true));
+    dispatch(actions.toggleIsFetchingActionCreator(true));
 
     try {
-        const { items, totalCount } = await getUsersAPI(pageItem, pageSize);
-        dispatch(setUsersActionCreator(items));
-        dispatch(setTotalUsersCountActionCreator(totalCount));
+        const { items, totalCount } = await usersApi.getUsersAPI(pageItem, pageSize);
+        dispatch(actions.setUsersActionCreator(items));
+        dispatch(actions.setTotalUsersCountActionCreator(totalCount));
     } catch (error) {
         console.log(error);
     } finally {
-        dispatch(toggleIsFetchingActionCreator(false));
+        dispatch(actions.toggleIsFetchingActionCreator(false));
     }
 };
 
-const followUnfollowFlow = async (dispatch: AppDispatch, id: number, apiMethod: (id: number) => Promise<any>, actionCreator: any) => {
-    dispatch(toggleIsProgressRequestActionCreator(true, id));
+const followUnfollowFlow = async (dispatch: AppDispatch, id: number, apiMethod: (id: number) => Promise<any>, actionCreator: (id: number) => FollowType | UnFollowType) => {
+    dispatch(actions.toggleIsProgressRequestActionCreator(true, id));
     try {
         const { resultCode } = await apiMethod(id);
-        if (resultCode === 0) {
+        if (resultCode === ResultCodes.Success) {
             dispatch(actionCreator(id));
         }
     } catch (error) {
         console.log(error);
     } finally {
-        dispatch(toggleIsProgressRequestActionCreator(false, id));
+        dispatch(actions.toggleIsProgressRequestActionCreator(false, id));
     }
 };
 
 export const followUserThunkCreator = (id: number) => async (dispatch: AppDispatch) => {
-    followUnfollowFlow(dispatch, id, followUserAPI, followActionCreator);
+    followUnfollowFlow(dispatch, id, usersApi.followUserAPI, actions.followActionCreator);
 };
 
 export const unfollowUserThunkCreator = (id: number) => async (dispatch: AppDispatch) => {
-    followUnfollowFlow(dispatch, id, unfollowUserAPI, unfollowActionCreator);
+    followUnfollowFlow(dispatch, id, usersApi.unfollowUserAPI, actions.unfollowActionCreator);
 };
 
 type InitialStateType = {
@@ -137,7 +128,9 @@ const initialState: InitialStateType = {
     isProgressRequest: [],
 };
 
-export const usersReducer = (state = initialState, action: FollowType | UnFollowType | SetUserType | SetCurrentPageType | SetTotalUsersCountType | ToggleIsFetchingType | ToggleIsProgressRequestType ): InitialStateType => {
+type ActionsTypes = ActionsTypeReturn<typeof actions>;
+
+export const usersReducer = (state = initialState, action: ActionsTypes ): InitialStateType => {
     switch (action.type) {
         case actionsTypes.setUsers:
             return {

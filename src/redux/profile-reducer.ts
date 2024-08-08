@@ -1,10 +1,7 @@
 import {
-    getProfileUserAPI,
-    getUserStatusAPI,
-    saveUserPhoto,
-    saveUserProfile,
-    updateUserStatusAPI,
+    ResultCodes,
 } from '../api/api';
+import { profileApi } from '../api/profile-api';
 import { PostType } from '../components/Profile/MyPosts/MyPostsType';
 import { ProfileType } from '../components/Profile/ProfileType';
 import { AppDispatch } from './redux-store';
@@ -69,7 +66,7 @@ export const postsData: PostType[] = [
 
 export const getProfileUserThunkCreator = (id: string) => async (dispatch: AppDispatch) => {
     try {
-        const data = await getProfileUserAPI(id);
+        const data = await profileApi.getProfileUserAPI(id);
         dispatch(setUserProfileActionCreator(data));
     } catch (error) {
         console.log(error);
@@ -78,7 +75,7 @@ export const getProfileUserThunkCreator = (id: string) => async (dispatch: AppDi
 
 export const getStatusUserThunkCreator = (id: string) => async (dispatch: AppDispatch) => {
     try {
-        const { data } = await getUserStatusAPI(id);
+        const { data } = await profileApi.getUserStatusAPI(id);
         dispatch(getUserStatusActionCreator(data));
     } catch (error) {
         console.log(error);
@@ -87,7 +84,7 @@ export const getStatusUserThunkCreator = (id: string) => async (dispatch: AppDis
 
 export const updateStatusUserThunkCreator = (status: string) => async (dispatch: AppDispatch) => {
     try {
-        const { resultCode } = await updateUserStatusAPI(status);
+        const { resultCode } = await profileApi.updateUserStatusAPI(status);
         if (!resultCode) {
             dispatch(getUserStatusActionCreator(status));
         }
@@ -98,7 +95,7 @@ export const updateStatusUserThunkCreator = (status: string) => async (dispatch:
 
 export const savePhotoUserThunkCreator = (photo: object) => async (dispatch: AppDispatch) => {
     try {
-        const { resultCode, data } = await saveUserPhoto(photo);
+        const { resultCode, data } = await profileApi.saveUserPhoto(photo);
         if (!resultCode) {
             dispatch(saveUserPhotoSuccessActionCreator(data.photos));
         }
@@ -109,12 +106,12 @@ export const savePhotoUserThunkCreator = (photo: object) => async (dispatch: App
 
 export const saveProfileUserThunkCreator =
     (profile: any, setStatus: any) =>
-    async (dispatch: AppDispatch, getState: () => { auth: { userId: any } }) => {
+    async (dispatch: AppDispatch, getState: () => { auth: { userId: string } }) => {
         const userId = getState().auth.userId;
 
         try {
-            const { resultCode, messages } = await saveUserProfile(profile);
-            if (resultCode === 0) {
+            const { resultCode, messages } = await profileApi.saveUserProfile(profile);
+            if (resultCode === ResultCodes.Success) {
                 dispatch(getProfileUserThunkCreator(userId));
             } else {
                 setStatus({ error: messages });
@@ -138,7 +135,9 @@ const initialState = {
     status: '',
 };
 
-export const profileReducer = (state = initialState, action: AddPostType | SetUserProfileType | GetUserStatusType | SaveUserPhotoSuccessType): InitialStateType => {
+type ActionsTypes = AddPostType | SetUserProfileType | GetUserStatusType | SaveUserPhotoSuccessType;
+
+export const profileReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case actionsTypes.addPost:
             const newPost: PostType = {

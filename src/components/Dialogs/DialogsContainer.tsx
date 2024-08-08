@@ -9,6 +9,7 @@ import { withAuthRedirect } from '../../hoc/AuthRedirect';
 import { compose } from '@reduxjs/toolkit';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppDispatch, RootState } from '../../redux/redux-store';
+import { DialogsType, MessagesType } from './dataType';
 
 export const DialogsContainer: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -27,14 +28,14 @@ export const DialogsContainer: React.FC = () => {
     );
 };
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState): {dialogs: DialogsType[], messages: MessagesType[]} => {
     return {
         dialogs: getDialogsSelector(state),
         messages: getMessagesSelector(state)
     };
 };
 
-const mapDispatchToProps = (dispatch: AppDispatch) => {
+const mapDispatchToProps = (dispatch: AppDispatch): {addMessage: (text: string) => void} => {
     return {
         addMessage: (text: string) => { dispatch(addMessageActionCreator(text));},
     };

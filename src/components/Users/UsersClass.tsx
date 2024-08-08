@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { Users } from './Users';
-import { UserType } from './UsersType';
 import { Loader } from '../commen';
+
+import { UserType } from './UsersType';
 
 type UsersAPIType = {
     users: UserType[];
@@ -17,7 +19,7 @@ type UsersAPIType = {
     followUserThunk: (id: number) => void;
 };
 
-export class UsersAPIContainer extends React.Component<UsersAPIType, {}> {
+export class UsersAPIContainer extends React.Component<UsersAPIType> {
     constructor(props: UsersAPIType) {
         super(props);
     }

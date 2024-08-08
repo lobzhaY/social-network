@@ -10,7 +10,7 @@ type ProfileAPIType = {
     status: string;
     userProfile: ProfileType | null;
     userId: string | undefined;
-    authorizedUserId: string;
+    authorizedUserId: number | undefined | null;
     isAuth: boolean;
     setUserProfile: (id: string) => void;
     getUserStatus: (id: string) => void;
@@ -25,7 +25,7 @@ class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
         let userId = this.props.userId;
         
         if (!this.props.userId) {
-            userId = this.props.authorizedUserId;
+            userId = `${this.props.authorizedUserId}`;
             
             if (!userId) {
                 this.props.navigate('/login');

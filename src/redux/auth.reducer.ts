@@ -1,4 +1,5 @@
-import { getCaptchaUrl, getCurrentAuthUserAPI, loginAPI, logoutAPI } from '../api/api';
+import {  ResultCodeForCaptcha, ResultCodes } from '../api/api';
+import { authApi } from '../api/auth-api';
 import { AppDispatch } from './redux-store';
 import { actionsTypes } from './store';
 
@@ -41,8 +42,8 @@ export const getCaptchaActionCreator = (url: string): GetCaptchaUrlType => ({
 
 export const getCurrentAuthUserThunkCreator = () => async (dispatch: AppDispatch) => {
     try {
-        const { resultCode, data } = await getCurrentAuthUserAPI();
-        if (resultCode === 0) {
+        const { resultCode, data } = await authApi.getCurrentAuthUserAPI();
+        if (resultCode === ResultCodes.Success) {
             const { id, email, login } = data;
             dispatch(setUserDataActionCreator(id, email, login, true));
         }
@@ -55,12 +56,12 @@ export const loginThunkCreator =
     (email: string, password: string, rememberMe: boolean, captcha: string, setStatus: any) =>
     async (dispatch: AppDispatch) => {
         try {
-            const { resultCode, messages } = await loginAPI(email, password, rememberMe, captcha);
+            const { resultCode, messages } = await authApi.loginAPI(email, password, rememberMe, captcha);
 
-            if (resultCode === 0) {
+            if (resultCode === ResultCodes.Success) {
                 dispatch(getCurrentAuthUserThunkCreator());
             } else {
-                if (resultCode === 10) {
+                if (resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
                     dispatch(getCaptchaUrlThunkCreator());
                 }
                 setStatus({ error: messages });
@@ -72,8 +73,8 @@ export const loginThunkCreator =
 
 export const logoutThunkCreator = () => async (dispatch: AppDispatch) => {
     try {
-        const { resultCode } = await logoutAPI();
-        if (resultCode === 0) {
+        const { resultCode } = await authApi.logoutAPI();
+        if (resultCode === ResultCodes.Success) {
             dispatch(setUserDataActionCreator(null, null, null, false));
         }
     } catch (error) {
@@ -83,7 +84,7 @@ export const logoutThunkCreator = () => async (dispatch: AppDispatch) => {
 
 export const getCaptchaUrlThunkCreator = () => async (dispatch: AppDispatch) => {
     try {
-        const { url } = await getCaptchaUrl();
+        const { url } = await authApi.getCaptchaUrl();
         getCaptchaActionCreator(url);
     } catch (error) {
         console.log(error);
@@ -91,7 +92,7 @@ export const getCaptchaUrlThunkCreator = () => async (dispatch: AppDispatch) => 
 };
 
 type InitialStateType = {
-    userId: number | null;
+    userId: number | null | undefined;
     userEmail: string | null;
     userLogin: string | null;
     isFetching: boolean;
@@ -108,9 +109,11 @@ const initialState: InitialStateType = {
     captchaUrl: null,
 };
 
+type ActionsTypes = SetUserDataType | GetCaptchaUrlType;
+
 export const authReducer = (
     state = initialState,
-    action: SetUserDataType | GetCaptchaUrlType,
+    action: ActionsTypes,
 ): InitialStateType => {
     switch (action.type) {
         case actionsTypes.setUserData:

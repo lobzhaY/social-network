@@ -1,11 +1,12 @@
 import {
     followUserThunkCreator,
     getUsersThunkCreator,
-    setCurrentPageActionCreator,
     unfollowUserThunkCreator,
+    actions
 } from '../../redux/users-reducer';
-import { UsersAPIContainer } from './UsersClass';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+
+import { UsersAPIContainer } from './UsersClass';
 
 export const UsersContainer: React.FC = () => {
     const { users, pageSize, totalUsersCount, currentPage, isFetching, isProgressRequest } =
@@ -13,7 +14,7 @@ export const UsersContainer: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const setCurrentPage = (currentPage: number) => {
-        dispatch(setCurrentPageActionCreator(currentPage));
+        dispatch(actions.setCurrentPageActionCreator(currentPage));
     };
 
     const getUsersThunk = (pageItem: number, pageSize: number) => {
