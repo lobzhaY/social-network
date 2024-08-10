@@ -1,7 +1,7 @@
 import {
-    addMessageActionCreator,
     getDialogsSelector,
     getMessagesSelector,
+    messageActions,
 } from '../../redux/message-reducer';
 import { connect } from 'react-redux';
 import { Dialogs } from './Dialogs';
@@ -16,7 +16,7 @@ export const DialogsContainer: React.FC = () => {
     const { dialogs, messages } = useAppSelector((state) => state.messagePage);
 
     const addMessage = (text: string) => {
-        dispatch(addMessageActionCreator(text));
+        dispatch(messageActions.addMessageActionCreator(text));
     };
 
     return (
@@ -37,7 +37,7 @@ const mapStateToProps = (state: RootState): {dialogs: DialogsType[], messages: M
 
 const mapDispatchToProps = (dispatch: AppDispatch): {addMessage: (text: string) => void} => {
     return {
-        addMessage: (text: string) => { dispatch(addMessageActionCreator(text));},
+        addMessage: (text: string) => { dispatch(messageActions.addMessageActionCreator(text));},
     };
 };
 

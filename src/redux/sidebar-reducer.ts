@@ -18,11 +18,9 @@ export const friendsData: FriendType[] = [
     },
 ];
 
-type InitialStateType = {
-    friends: FriendType[],
-}
+type InitialStateType = typeof initialState;
 
-const initialState: InitialStateType = {
+const initialState = {
     friends: friendsData,
 };
 

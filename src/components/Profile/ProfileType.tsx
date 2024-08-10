@@ -13,9 +13,11 @@ export type ProfileType = {
         youtube: string;
         mainLink: string;
     };
-    photos: {
-        small: string;
-        large: string;
-    };
+    photos: PhotosType,
     aboutMe?: string;
+};
+
+export type PhotosType = {
+    small: string;
+    large: string;
 };

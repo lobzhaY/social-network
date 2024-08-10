@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import {
-    addPostActionCreator
+    profileActions
 } from '../../../redux/profile-reducer';
 import { MyPosts } from './MyPosts';
 
@@ -10,7 +10,7 @@ export const MyPostsContainer: React.FC = () => {
     const { posts } = useAppSelector((state) => state.profilePage);
 
     const addPost = (text: string) => {
-        dispatch(addPostActionCreator(text));
+        dispatch(profileActions.addPostActionCreator(text));
     };
 
     return (

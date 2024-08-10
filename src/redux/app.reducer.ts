@@ -1,30 +1,29 @@
 import { getCurrentAuthUserThunkCreator } from './auth.reducer';
-import { AppDispatch } from './redux-store';
+import { AppDispatch, GetActionsTypes } from './redux-store';
 import { actionsTypes } from './store';
 
-type InitialStateType = {
-    initialized: boolean;
-};
+type InitialStateType = typeof initialState;
 
-type ActionType = {
-    type: typeof actionsTypes.setInitialized;
-};
+type ActionsType = GetActionsTypes<typeof actions>;
 
-export const initializedSuccessActionCreator = (): ActionType => ({
-    type: actionsTypes.setInitialized,
-});
-
-export const initializeAppThunkCreator = () => (dispatch: AppDispatch) => {
-    dispatch(getCurrentAuthUserThunkCreator()).then(() => {
-        dispatch(initializedSuccessActionCreator());
-    });
-};
-
-const initialState: InitialStateType = {
+const initialState = {
     initialized: false,
 };
 
-export const appReducer = (state = initialState, action: ActionType): InitialStateType => {
+const actions = {
+    initializedSuccessActionCreator: () =>
+        ({
+            type: actionsTypes.setInitialized,
+        }) as const,
+};
+
+export const initializeAppThunkCreator = () => (dispatch: AppDispatch) => {
+    dispatch(getCurrentAuthUserThunkCreator()).then(() => {
+        dispatch(actions.initializedSuccessActionCreator());
+    });
+};
+
+export const appReducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case actionsTypes.setInitialized:
             return { ...state, initialized: true };

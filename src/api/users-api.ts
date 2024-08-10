@@ -3,7 +3,9 @@ import { GetItemsType, instance, ResponseType } from './api';
 
 export const usersApi = {
     getUsersAPI: async (pageItem: number = 1, pageSize: number = 10) => {
-        const response = await instance.get<GetItemsType<UserType>>(`users?page=${pageItem}&count=${pageSize}`);
+        const response = await instance.get<GetItemsType<UserType>>(
+            `users?page=${pageItem}&count=${pageSize}`,
+        );
         return response.data;
     },
     followUserAPI: async (id: number) => {
