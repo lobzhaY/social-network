@@ -4,7 +4,14 @@ import { ProfileType } from './ProfileType';
 import { useNavigate, useParams } from 'react-router-dom';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getProfileUserThunkCreator, getStatusUserThunkCreator, savePhotoUserThunkCreator, saveProfileUserThunkCreator, updateStatusUserThunkCreator } from '../../redux/profile-reducer';
+import {
+    getProfileUserThunkCreator,
+    getStatusUserThunkCreator,
+    savePhotoUserThunkCreator,
+    saveProfileUserThunkCreator,
+    updateStatusUserThunkCreator,
+} from '../../redux/profile-reducer';
+import { File } from 'buffer';
 
 type ProfileAPIType = {
     status: string;
@@ -16,43 +23,60 @@ type ProfileAPIType = {
     getUserStatus: (id: string) => void;
     setUserStatus: (id: string) => void;
     navigate: any;
-    savePhoto: (photo: object) => void;
-    saveDataProfileForm: (dataForm: any, setStatus: any) => void;
+    savePhoto: (photo: File) => void;
+    saveDataProfileForm: (dataForm: ProfileType, setStatus: any) => void;
 };
 
 class ProfileAPIContainer extends React.Component<ProfileAPIType, {}> {
     updateProfile() {
         let userId = this.props.userId;
-        
+
         if (!this.props.userId) {
             userId = `${this.props.authorizedUserId}`;
-            
+
             if (!userId) {
                 this.props.navigate('/login');
             }
         }
 
-        this.props.setUserProfile(userId as string);
-        this.props.getUserStatus(userId as string);
+        if (userId) {
+            this.props.setUserProfile(userId);
+            this.props.getUserStatus(userId);
+        } else {
+            console.error('ID should exist in URL params or in state');
+        }
     }
     componentDidMount(): void {
-       this.updateProfile()
+        this.updateProfile();
     }
 
-    componentDidUpdate(prevProps: Readonly<ProfileAPIType>, prevState: Readonly<{}>, snapshot?: any): void {
+    componentDidUpdate(
+        prevProps: Readonly<ProfileAPIType>,
+        prevState: Readonly<{}>,
+        snapshot?: any,
+    ): void {
         if (prevProps.userId !== this.props.userId) {
-          this.updateProfile()
+            this.updateProfile();
         }
     }
 
     render() {
-        return <Profile saveDataProfileForm={this.props.saveDataProfileForm} savePhoto={this.props.savePhoto} isOwner={!this.props.userId} userProfile={this.props.userProfile} status={this.props.status} setUserStatus={this.props.setUserStatus} />;
+        return (
+            <Profile
+                saveDataProfileForm={this.props.saveDataProfileForm}
+                savePhoto={this.props.savePhoto}
+                isOwner={!this.props.userId}
+                userProfile={this.props.userProfile}
+                status={this.props.status}
+                setUserStatus={this.props.setUserStatus}
+            />
+        );
     }
 }
 
 export const ProfileContainer = () => {
     const { userProfile, status } = useAppSelector((state) => state.profilePage);
-   const { userId, isAuth } = useAppSelector((state) => state.auth);
+    const { userId, isAuth } = useAppSelector((state) => state.auth);
 
     const dispatch = useAppDispatch();
     const params = useParams();
@@ -68,14 +92,14 @@ export const ProfileContainer = () => {
     };
 
     const setUserStatus = (status: string) => {
-        dispatch(updateStatusUserThunkCreator(status))
+        dispatch(updateStatusUserThunkCreator(status));
     };
 
-    const savePhoto = (photo: object) => {
+    const savePhoto = (photo: File) => {
         dispatch(savePhotoUserThunkCreator(photo));
     };
 
-    const saveDataProfileForm = (dataForm: any, setStatus: any) => {
+    const saveDataProfileForm = (dataForm: ProfileType, setStatus: any) => {
         dispatch(saveProfileUserThunkCreator(dataForm, setStatus));
     };
 

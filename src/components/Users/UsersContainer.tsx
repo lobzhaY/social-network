@@ -2,14 +2,15 @@ import {
     followUserThunkCreator,
     getUsersThunkCreator,
     unfollowUserThunkCreator,
-    actions
+    actions,
+    FilterFormType
 } from '../../redux/users-reducer';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 import { UsersAPIContainer } from './UsersClass';
 
 export const UsersContainer: React.FC = () => {
-    const { users, pageSize, totalUsersCount, currentPage, isFetching, isProgressRequest } =
+    const { users, pageSize, totalUsersCount, currentPage, isFetching, isProgressRequest, filter } =
         useAppSelector((state) => state.usersPage);
     const dispatch = useAppDispatch();
 
@@ -17,8 +18,8 @@ export const UsersContainer: React.FC = () => {
         dispatch(actions.setCurrentPageActionCreator(currentPage));
     };
 
-    const getUsersThunk = (pageItem: number, pageSize: number) => {
-        dispatch(getUsersThunkCreator(pageItem, pageSize));
+    const getUsersThunk = (pageItem: number, pageSize: number, filter: FilterFormType = {term: '', friend: null}) => {
+        dispatch(getUsersThunkCreator(pageItem, pageSize, filter));
     };
 
     const unfollowUserThunk = (id: number) => {
@@ -28,6 +29,11 @@ export const UsersContainer: React.FC = () => {
     const followUserThunk = (id: number) => {
         dispatch(followUserThunkCreator(id));
     };
+
+    const filterChanged = (filter: FilterFormType) => {
+        dispatch(getUsersThunkCreator(1, pageSize, filter));
+    };
+
 
     return (
         <UsersAPIContainer
@@ -39,8 +45,10 @@ export const UsersContainer: React.FC = () => {
             isFetching={isFetching}
             isProgress={isProgressRequest}
             getUsersThunk={getUsersThunk}
+            filterChanged={filterChanged}
             unfollowUserThunk={unfollowUserThunk}
             followUserThunk={followUserThunk}
+            filter={filter}
         />
     );
 };

@@ -4,15 +4,15 @@ import userMock from '../../../assets/images/user-mock.png';
 import { ProfileStatus } from './ProfileStatus';
 import { ProfileData } from './profile-data';
 import { ProfileForm } from './profile-form';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 type ProfileInfoType = {
     isOwner: boolean;
     status: string;
     userProfile: ProfileType;
     setUserStatus: (status: string) => void;
-    savePhoto: (photo: object) => void;
-    saveDataProfileForm: (dataForm: any, setStatus: any) => void;
+    savePhoto: (photo: File) => void;
+    saveDataProfileForm: (dataForm: ProfileType, setStatus: any) => void;
 };
 
 export const ProfileInfo: React.FC<ProfileInfoType> = ({
@@ -23,8 +23,8 @@ export const ProfileInfo: React.FC<ProfileInfoType> = ({
     setUserStatus,
     saveDataProfileForm
 }) => {
-    const mainImgSelected = (e) => {
-        if (e.target.files.length) {
+    const mainImgSelected = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length) {
             savePhoto(e.target.files[0]);
         }
     };

@@ -12,7 +12,13 @@ type InitialStateType = {
     currentPage: number;
     isFetching: boolean;
     isProgressRequest: number[];
+    filter: FilterFormType;
 };
+
+export type FilterFormType = {
+    term: string;
+    friend: boolean | null;
+}
 
 type ActionsTypes = GetActionsTypes<typeof actions>;
 
@@ -38,6 +44,10 @@ const initialState: InitialStateType = {
     currentPage: 1,
     isFetching: false,
     isProgressRequest: [],
+    filter: {
+        term: '',
+        friend: null,
+    },
 };
 
 export const actions = {
@@ -79,14 +89,21 @@ export const actions = {
                 isProgressId,
             },
         }) as const,
+    setFilterActionCreator: (filter?: FilterFormType | undefined) =>
+        ({
+            type: actionsTypes.setUsersFilter,
+            payload: filter,
+        }) as const,
 };
 
 export const getUsersThunkCreator =
-    (pageItem: number, pageSize: number) => async (dispatch: AppDispatch) => {
+    (pageItem: number, pageSize: number, filter: FilterFormType) => async (dispatch: AppDispatch) => {
         dispatch(actions.toggleIsFetchingActionCreator(true));
+        dispatch(actions.setCurrentPageActionCreator(pageItem));
+        dispatch(actions.setFilterActionCreator(filter));
 
         try {
-            const { items, totalCount } = await usersApi.getUsersAPI(pageItem, pageSize);
+            const { items, totalCount } = await usersApi.getUsersAPI(pageItem, pageSize, filter);
             dispatch(actions.setUsersActionCreator(items));
             dispatch(actions.setTotalUsersCountActionCreator(totalCount));
         } catch (error) {
@@ -172,6 +189,12 @@ export const usersReducer = (state = initialState, action: ActionsTypes): Initia
             return {
                 ...state,
                 users: updateObjectInArray(state.users, action.payload, 'id', { followed: false }),
+            };
+
+        case actionsTypes.setUsersFilter:
+            return {
+                ...state,
+                filter: action.payload as FilterFormType,
             };
 
         default:

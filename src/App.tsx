@@ -16,7 +16,7 @@ function App() {
     const { initialized } = useAppSelector((state) => state.app);
     const { friends } = useAppSelector((state) => state.sidebar);
 
-    const handleCatchErrors = (promiseRejectionEvent) => {
+    const handleCatchErrors = (promiseRejectionEvent: PromiseRejectionEvent) => {
         console.log(promiseRejectionEvent);
     };
 

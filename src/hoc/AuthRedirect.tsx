@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom';
 import { ROUTER_PATH } from '../routes/router-constants';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../hooks';
 
-export const withAuthRedirect = (Component) => {
+export const withAuthRedirect = (Component: React.FC) => {
     const RedirectComponent: React.FC = ({}) => {
-        const { isAuth } = useSelector((state) => state.auth);
+        const { isAuth } = useAppSelector((state) => state.auth);
 
         if (!isAuth) {
             return <Navigate to={ROUTER_PATH.login} />;

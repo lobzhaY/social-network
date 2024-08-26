@@ -8,8 +8,8 @@ type ProfileComponentType = {
     status: string;
     userProfile: ProfileType | null;
     setUserStatus: (status: string) => void;
-    savePhoto: (photo: object) => void;
-    saveDataProfileForm: (dataForm: any, setStatus: any) => void;
+    savePhoto: (photo: File) => void;
+    saveDataProfileForm: (dataForm: ProfileType, setStatus: any) => void;
 };
 
 export const Profile: React.FC<ProfileComponentType> = ({saveDataProfileForm, savePhoto, isOwner, userProfile, status, setUserStatus}) => {

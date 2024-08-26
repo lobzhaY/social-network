@@ -100,7 +100,7 @@ export const savePhotoUserThunkCreator = (photo: File) => async (dispatch: AppDi
 
 export const saveProfileUserThunkCreator =
     (profile: ProfileType, setStatus: any) =>
-    async (dispatch: AppDispatch, getState: () => { auth: { userId: string } }) => {
+    async (dispatch: AppDispatch, getState) => {
         const userId = getState().auth.userId;
 
         try {

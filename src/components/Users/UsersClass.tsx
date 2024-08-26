@@ -4,6 +4,7 @@ import { Users } from './Users';
 import { Loader } from '../commen';
 
 import { UserType } from './UsersType';
+import { FilterFormType } from '../../redux/users-reducer';
 
 type UsersAPIType = {
     users: UserType[];
@@ -12,11 +13,13 @@ type UsersAPIType = {
     totalUsersCount: number;
     isFetching: boolean;
     isProgress: number[];
+    filter: FilterFormType;
    
     setCurrentPage: (currentPage: number) => void; 
-    getUsersThunk: (isFetching: number, isProgress: number) => void;
+    getUsersThunk: (isFetching: number, isProgress: number, filter?: FilterFormType | undefined) => void;
     unfollowUserThunk: (id: number) => void;
     followUserThunk: (id: number) => void;
+    filterChanged: (filter: FilterFormType) => void;
 };
 
 export class UsersAPIContainer extends React.Component<UsersAPIType> {
@@ -24,8 +27,9 @@ export class UsersAPIContainer extends React.Component<UsersAPIType> {
         super(props);
     }
 
-    getUsers = (pageItem: number, pageSize: number) => {
-        this.props.getUsersThunk(pageItem, pageSize);
+    getUsers = (pageItem: number, pageSize: number, filter: FilterFormType = {term: '', friend: null}) => {
+
+        this.props.getUsersThunk(pageItem, pageSize, filter);
     };
 
     componentDidMount(): void {
@@ -34,7 +38,7 @@ export class UsersAPIContainer extends React.Component<UsersAPIType> {
 
     handleChangeCurrentPage = (pageItem: number) => {
         this.props.setCurrentPage(pageItem);
-        this.getUsers(pageItem, this.props.pageSize);
+        this.getUsers(pageItem, this.props.pageSize, this.props.filter);
     };
 
     render() {
@@ -50,6 +54,7 @@ export class UsersAPIContainer extends React.Component<UsersAPIType> {
                     totalUsersCount={this.props.totalUsersCount}
                     pageSize={this.props.pageSize}
                     isProgress={this.props.isProgress}
+                    filterChanged={this.props.filterChanged}
                 />
             </>
         );

@@ -18,4 +18,5 @@ export const actionsTypes = {
     deletePost: '/profile/DELETE_POST',
     saveUserPhoto: '/profile/SAVE_USER_PHOTO_SUCCESS',
     getCaptchaUrl: '/auth/GET_CAPTCHA_URL',
+    setUsersFilter: '/users/SET_USERS_FILTER'
 };
