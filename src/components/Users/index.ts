@@ -1,2 +1,2 @@
 export { Users } from './Users';
-export { UsersContainer } from './UsersContainer';
+export { UsersPage } from './UsersPage';

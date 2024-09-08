@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 
 import { createBrowserRouter } from 'react-router-dom';
 
-import { Music, News, Settings, UsersContainer } from '../components';
+import { Music, News, Settings, UsersPage } from '../components';
 import { Login } from '../components/Login';
 import { Loader } from '../components/commen';
 import App from '../App';
@@ -61,7 +61,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: ROUTER_PATH.users,
-                element: <UsersContainer />,
+                element: <UsersPage />,
             },
             {
                 path: ROUTER_PATH.login,

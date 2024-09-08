@@ -20,7 +20,7 @@ export const UsersSearchForm: React.FC<UsersSearchFormProps> = React.memo(({ fil
     ) => {
         const filter: FilterFormType = {
             term: values.term,
-            friend: values.friend === 'null' ? null : !!values.friend,
+            friend: JSON.parse(values.friend)
         }
 
         filterChanged(filter);

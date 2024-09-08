@@ -1,35 +1,31 @@
 import React from 'react';
-import { FilterFormType } from '../../redux/users-reducer';
+import { FilterFormType, followUserThunkCreator, getUsersThunkCreator, unfollowUserThunkCreator } from '../../redux/users-reducer';
 import { Pagination } from '../commen';
 import { User } from './user/user';
 import { UsersSearchForm } from './users-search-form';
 
-import { UserType } from './UsersType';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export type UsersType = {
-    users: UserType[];
-    pageSize: number;
-    currentPage: number;
-    totalUsersCount: number;
-    isProgress: number[];
-    followUser: (userId: number) => void;
-    unfollowUser: (userId: number) => void;
     handleChangeCurrentPage: (currentPage: number) => void;
-    filterChanged: (filter: FilterFormType) => void;
 };
 
 export const Users: React.FC<UsersType> = React.memo(
     ({
-        users,
-        followUser,
-        unfollowUser,
-        totalUsersCount,
-        pageSize,
-        currentPage,
         handleChangeCurrentPage,
-        isProgress,
-        filterChanged,
     }) => {
+        const {users, pageSize, totalUsersCount, currentPage, isProgressRequest} = useAppSelector((state) => state.usersPage);
+        const dispatch = useAppDispatch();
+        
+        const unfollowUser = (id: number) => {
+            dispatch(unfollowUserThunkCreator(id));
+        };
+        const followUser = (id: number) => {
+            dispatch(followUserThunkCreator(id));
+        };
+        const filterChanged = (filter: FilterFormType) => {
+            dispatch(getUsersThunkCreator(1, pageSize, filter));
+        };
         return (
             <div>
                 <UsersSearchForm filterChanged={filterChanged} />
@@ -48,7 +44,7 @@ export const Users: React.FC<UsersType> = React.memo(
                         user={user}
                         followUser={followUser}
                         unfollowUser={unfollowUser}
-                        isProgress={isProgress}
+                        isProgress={isProgressRequest}
                         key={user.id}
                     />
                 ))}

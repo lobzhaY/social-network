@@ -5,4 +5,4 @@ export { Dialogs } from './Dialogs';
 export { News } from './News';
 export { Music } from './Music';
 export { Settings } from './Settings';
-export { Users, UsersContainer } from './Users';
+export { Users, UsersPage } from './Users';
